@@ -3,6 +3,7 @@ import Abi from 'web3/abi/MemelordDistrict.abi.json';
 import { useWeb3 } from './useWeb3';
 import { useChain } from './useChain';
 import { Chain } from 'web3/types';
+import { useEffect } from 'react';
 
 export const useContract = () => {
   const { chainId } = useChain();
@@ -23,8 +24,12 @@ export const useContract = () => {
     contractAddress[chainId].toLowerCase(),
   );
 
+  useEffect(() => {
+    console.info('contract', contractAddress[chainId].toLowerCase());
+  }, [chainId]);
+
   return {
-    address: contractAddress,
+    address: contractAddress[chainId].toLowerCase(),
     contract,
   };
 };

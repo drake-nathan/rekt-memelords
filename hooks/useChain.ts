@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Chain } from 'web3/types';
 
 export const useChain = () => {
@@ -8,6 +9,10 @@ export const useChain = () => {
   }
 
   const chainId = envChain === 'goerli' ? Chain.goerli : Chain.mainnet;
+
+  useEffect(() => {
+    console.info(`Chain: ${chainId}`);
+  }, [chainId]);
 
   const rpc = {
     [Chain.mainnet]: process.env.NEXT_PUBLIC_RPC_URL_1 as string,

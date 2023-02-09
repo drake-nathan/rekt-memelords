@@ -69,7 +69,7 @@ const Web3Buttons = (): JSX.Element => {
       mintPhase === MintPhase.discount &&
       allowlistInfo.allowlistStatus === AllowlistStatus.NotAllowlisted
     ) {
-      return handleError('Must be allowlisted to mint during discount phase');
+      return handleError('Must be allowlisted to mint during this phase');
     }
 
     if (
@@ -151,11 +151,14 @@ const Web3Buttons = (): JSX.Element => {
     if (!active) {
       setCryptoButtonText('CONNECT WALLET');
       closeAllModals();
-    } else if (active) {
+    }
+
+    if (active) {
       if (account && mintPhase === MintPhase.discount) {
         getAllowlistStatus(account)
           .then((status) => {
             if (status) {
+              console.info('Allowlist status: ', status);
               setAllowlistInfo(status);
               setMaxMint(status.amountOfTokens || maxPublicMint);
             }

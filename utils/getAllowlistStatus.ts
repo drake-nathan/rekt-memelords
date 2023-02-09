@@ -20,6 +20,7 @@ export const getAllowlistStatus = async (account: string) => {
       };
     }
   } catch (error) {
+    console.error(error);
     return {
       allowlistStatus: AllowlistStatus.NotAllowlisted,
       amountOfTokens: 0,
