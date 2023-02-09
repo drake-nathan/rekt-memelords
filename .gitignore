@@ -1,5 +1,4 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-/proofs
 # dependencies
 /node_modules
 /.pnp
@@ -14,6 +13,7 @@
 
 # production
 /build
+proofs
 
 # misc
 .DS_Store
