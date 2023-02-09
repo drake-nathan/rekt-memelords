@@ -155,22 +155,10 @@ const Web3Buttons = (): JSX.Element => {
 
     if (active) {
       if (account && mintPhase === MintPhase.discount) {
-        getAllowlistStatus(account)
-          .then((status) => {
-            if (status) {
-              console.info('Allowlist status: ', status);
-              setAllowlistInfo(status);
-              setMaxMint(status.amountOfTokens || maxPublicMint);
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            setAllowlistInfo({
-              allowlistStatus: AllowlistStatus.NotAllowlisted,
-              amountOfTokens: 0,
-              merkleProof: [''],
-            });
-          });
+        const allowListInfo = getAllowlistStatus(account);
+        console.info(allowListInfo);
+        setAllowlistInfo(allowListInfo);
+        setMaxMint(allowListInfo.amountOfTokens);
       }
 
       setCryptoButtonText('MINT');
