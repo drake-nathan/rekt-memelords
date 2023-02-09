@@ -13,14 +13,14 @@ import BuyModal from 'components/Modals/BuyModal';
 import ErrorModal from 'components/Modals/ErrorModal';
 import SuccessModal from 'components/Modals/SuccessModal';
 import { getAllowlistStatus, AllowlistStatus } from 'utils/getAllowlistStatus';
+import { MintPhase } from 'web3/types';
 
 const Web3Buttons = (): JSX.Element => {
   useEagerConnect();
   const web3 = useWeb3();
   const { active, account } = useWeb3React();
   const {
-    isDiscountMintLive,
-    isPublicMintLive,
+    mintPhase,
     mintPrice,
     discountPrice,
     maxSupply,
@@ -49,7 +49,7 @@ const Web3Buttons = (): JSX.Element => {
 
   const [walletBalance, setWalletBalance] = useState('0');
   const [maxMint, setMaxMint] = useState(maxPublicMint);
-  const price = isDiscountMintLive ? discountPrice : mintPrice;
+  const price = mintPhase === MintPhase.discount ? discountPrice : mintPrice;
 
   const handleError = (error: string) => {
     setErrorMessage(error);
@@ -57,19 +57,23 @@ const Web3Buttons = (): JSX.Element => {
   };
 
   const handleMintClick = async () => {
-    if (!isPublicMintLive) {
+    if (mintPhase === MintPhase.closed) {
       return handleError('Mint is not live yet');
     }
 
     if (!active) {
-      setShowConnectModal(!showConnectModal);
-    } else if (
-      isDiscountMintLive &&
+      return setShowConnectModal(!showConnectModal);
+    }
+
+    if (
+      mintPhase === MintPhase.discount &&
       allowlistInfo.allowlistStatus === AllowlistStatus.NotAllowlisted
     ) {
-      handleError('Must be allowlisted to mint during discount phase');
-    } else if (
-      isDiscountMintLive &&
+      return handleError('Must be allowlisted to mint during discount phase');
+    }
+
+    if (
+      mintPhase === MintPhase.discount &&
       allowlistInfo.allowlistStatus === AllowlistStatus.Allowlisted
     ) {
       const hasClaimed = await checkIfUserHasClaimedDiscount(
@@ -80,18 +84,20 @@ const Web3Buttons = (): JSX.Element => {
       if (hasClaimed) {
         return handleError('You have already claimed your discount allocation');
       }
-    } else if (Number(price) > Number(walletBalance)) {
-      handleError('Insufficient funds');
-    } else {
-      setBuyButtonText('MINT');
-      setShowBuyModal(true);
     }
+
+    if (Number(price) > Number(walletBalance)) {
+      return handleError('Insufficient funds');
+    }
+
+    setBuyButtonText('MINT');
+    setShowBuyModal(true);
   };
 
   const handleMint = async (numberOfTokens: number) => {
     try {
       if (
-        isDiscountMintLive &&
+        mintPhase === MintPhase.discount &&
         allowlistInfo.allowlistStatus === AllowlistStatus.Allowlisted
       ) {
         const payableAmount = numberOfTokens * discountPrice;
@@ -146,7 +152,7 @@ const Web3Buttons = (): JSX.Element => {
       setCryptoButtonText('CONNECT WALLET');
       closeAllModals();
     } else if (active) {
-      if (account && isDiscountMintLive) {
+      if (account && mintPhase === MintPhase.discount) {
         getAllowlistStatus(account)
           .then((status) => {
             if (status) {
@@ -191,7 +197,7 @@ const Web3Buttons = (): JSX.Element => {
       {showBuyModal && (
         <BuyModal
           setShowModal={setShowBuyModal}
-          isDiscount={isDiscountMintLive}
+          isDiscount={mintPhase === MintPhase.discount}
           handleCryptoMint={handleMint}
           handleError={handleError}
           buyButtonText={buyButtonText}

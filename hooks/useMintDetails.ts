@@ -21,32 +21,14 @@ export const useMintDetails = () => {
   const maxPublicMint = 5;
   const maxDiscountMint = 10;
 
-  const [isPublicMintLive, setIsMintLive] = useState(false);
-  const [isDiscountMintLive, setIsDiscountMint] = useState(false);
+  const [mintPhase, setMintPhase] = useState<MintPhase>(MintPhase.closed);
   const [currentSupply, setCurrentSupply] = useState<number>();
 
   useEffect(() => {
     fetchMintPhase(contract)
       .then((mintPhase) => {
         if (mintPhase) {
-          if (mintPhase === MintPhase.public) {
-            setIsMintLive(true);
-            setIsDiscountMint(false);
-          } else if (mintPhase === MintPhase.discount) {
-            setIsMintLive(true);
-            setIsDiscountMint(true);
-          } else if (mintPhase === MintPhase.closed) {
-            setIsMintLive(false);
-            setIsDiscountMint(false);
-          } else console.error('Invalid mint phase');
-        } else {
-          if (currentTime >= mintStart && currentTime <= mintEnd) {
-            setIsMintLive(true);
-          }
-
-          if (currentTime >= mintStart && currentTime <= publicStart) {
-            setIsDiscountMint(true);
-          }
+          setMintPhase(mintPhase);
         }
       })
       .catch(console.error);
@@ -65,8 +47,7 @@ export const useMintDetails = () => {
   }, [currentSupply]);
 
   return {
-    isPublicMintLive,
-    isDiscountMintLive,
+    mintPhase,
     mintStart,
     mintEnd,
     mintPrice,

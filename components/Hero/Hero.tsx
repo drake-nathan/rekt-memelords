@@ -5,14 +5,14 @@ import Web3Buttons from '../Web3/Web3Buttons';
 import { useContract } from 'hooks/useContract';
 import { fetchCurrentSupply } from 'web3/contractInteractions';
 import Image from 'next/image';
+import { MintPhase } from 'web3/types';
 
 const Hero = (): JSX.Element => {
   const { contract } = useContract();
-  const { maxSupply, mintPrice, discountPrice, isDiscountMintLive } =
-    useMintDetails();
+  const { maxSupply, mintPrice, discountPrice, mintPhase } = useMintDetails();
 
   const [currentSupply, setCurrentSupply] = useState(maxSupply);
-  const price = isDiscountMintLive ? discountPrice : mintPrice;
+  const price = mintPhase === MintPhase.discount ? discountPrice : mintPrice;
 
   useEffect(() => {
     fetchCurrentSupply(contract).then((response) => setCurrentSupply(response));
@@ -38,7 +38,7 @@ const Hero = (): JSX.Element => {
           </St.Text>
         </St.InfoDiv>
 
-        {isDiscountMintLive && (
+        {mintPhase === MintPhase.discount && (
           <St.ExplainDiv>
             <St.Text>Red Lite District mint phase</St.Text>
             <St.Text>Must be on pre-set allowlist</St.Text>

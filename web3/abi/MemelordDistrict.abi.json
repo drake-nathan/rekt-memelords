@@ -1,16 +1,11 @@
 [
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "_merkleRoot", "type": "bytes32" },
+      { "internalType": "bytes32", "name": "merkleRoot", "type": "bytes32" },
       { "internalType": "address", "name": "projectWallet", "type": "address" },
       { "internalType": "address", "name": "nateWallet", "type": "address" },
       { "internalType": "address", "name": "saintWallet", "type": "address" },
-      { "internalType": "address", "name": "hmooreWallet", "type": "address" },
-      {
-        "internalType": "address",
-        "name": "memelordsWallet",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "hmooreWallet", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -217,6 +212,34 @@
   },
   {
     "inputs": [],
+    "name": "DISCOUNT_PRICE",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_PURCHASE_DISCOUNT",
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_PURCHASE_PUBLIC",
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_SUPPLY",
+    "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "MINT_PRICE",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
@@ -242,13 +265,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "baseURI",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
     ],
@@ -269,7 +285,7 @@
     "name": "currentPhase",
     "outputs": [
       {
-        "internalType": "enum MemelordDistrict.MintPhase",
+        "internalType": "enum MemeLordDistrict.MintPhase",
         "name": "",
         "type": "uint8"
       }
@@ -307,13 +323,6 @@
     ],
     "name": "isApprovedForAll",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "merkleRoot",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -371,6 +380,13 @@
     "name": "publicMint",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "releaseFunds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -459,8 +475,17 @@
   },
   {
     "inputs": [
+      { "internalType": "bytes32", "name": "newRoot", "type": "bytes32" }
+    ],
+    "name": "setMerkleRoot",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
-        "internalType": "enum MemelordDistrict.MintPhase",
+        "internalType": "enum MemeLordDistrict.MintPhase",
         "name": "newPhase",
         "type": "uint8"
       }
@@ -475,6 +500,19 @@
       { "internalType": "uint256", "name": "newPrice", "type": "uint256" }
     ],
     "name": "setPublicMintPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newTreasuryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTreasuryAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

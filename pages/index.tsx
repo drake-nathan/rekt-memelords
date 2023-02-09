@@ -5,10 +5,11 @@ import { useRouter } from 'next/router';
 import { useMintDetails } from 'hooks/useMintDetails';
 import Hero from 'components/Hero/Hero';
 import FallbackPage from 'components/FallbackPage/FallbackPage';
+import { MintPhase } from 'web3/types';
 
 const Home: NextPage = () => {
   const nodeEnv = process.env.NODE_ENV;
-  const { isPublicMintLive: isMintLive } = useMintDetails();
+  const { mintPhase } = useMintDetails();
   const { query } = useRouter();
 
   const [showFallback, setShowFallback] = useState(true);
@@ -21,12 +22,12 @@ const Home: NextPage = () => {
       // NOTE: add /?showFallback=false to the url to hide the fallback page in production
       // NOTE: also hide fallback page if mint is live in prod or anytime in dev
       query.showFallback === 'false' ||
-      (nodeEnv === 'production' && isMintLive) ||
+      (nodeEnv === 'production' && mintPhase !== MintPhase.closed) ||
       nodeEnv === 'development'
     ) {
       setShowFallback(false);
     }
-  }, [query, isMintLive, nodeEnv]);
+  }, [query, mintPhase, nodeEnv]);
 
   return (
     <>
