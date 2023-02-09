@@ -3,13 +3,8 @@ import { useWeb3React } from '@web3-react/core';
 import { useEagerConnect } from 'hooks/useEagerConnect';
 import { useMintDetails } from 'hooks/useMintDetails';
 import { useContract } from 'hooks/useContract';
-import {
-  publicMint,
-  presaleMint,
-  discountMint,
-  ISuccessInfo,
-} from './web3Helpers';
-import { checkIfUserHasClaimedDiscount } from 'web3/web3Fetches';
+import { publicMint, discountMint, ISuccessInfo } from './web3Helpers';
+import { checkIfUserHasClaimedDiscount } from 'web3/contractInteractions';
 import ConnectModal from 'components/Modals/ConnectModal';
 import BuyModal from 'components/Modals/BuyModal';
 import ErrorModal from 'components/Modals/ErrorModal';
@@ -20,14 +15,13 @@ import * as St from '../Hero/Hero.styled';
 const Web3Buttons: React.FC = () => {
   useEagerConnect();
   const { active, account } = useWeb3React();
-  const { isPreSale, mintPrice, maxSupply, discountPrice, isMintLive } =
+  const { isDiscountMint, mintPrice, maxSupply, discountPrice, isMintLive } =
     useMintDetails();
-  const { storefrontContract, tokenContract } = useContract();
+  const { contract } = useContract();
 
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
 
-  const [isDiscount, setIsDiscount] = useState(false);
   const [allowlistInfo, setAllowlistInfo] = useState({
     allowlistStatus: AllowlistStatus.NotAllowlisted,
     merkleProof: [''],
@@ -39,10 +33,8 @@ const Web3Buttons: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successInfo, setSuccessInfo] = useState<ISuccessInfo>();
 
-  const [showCardDiscountModal, setShowCardDiscountModal] = useState(false);
-
   const [cryptoButtonText, setCryptoButtonText] = useState('CONNECT WALLET');
-  const [buyButtonText, setBuyButtonText] = useState('MINT WITH CRYPTO');
+  const [buyButtonText, setBuyButtonText] = useState('MINT');
 
   const handleError = (error: string) => {
     setErrorMessage(error);
@@ -53,49 +45,30 @@ const Web3Buttons: React.FC = () => {
     if (!isMintLive) {
       return handleError('MINT IS NOT LIVE YET');
     }
+
     if (!active) {
       setShowConnectModal(!showConnectModal);
     } else if (
-      isPreSale &&
+      isDiscountMint &&
       allowlistInfo.allowlistStatus === AllowlistStatus.NotAllowlisted
     ) {
-      handleError('MUST BE ALLOWLISTED TO MINT DURING PRESALE');
+      handleError('MUST BE ALLOWLISTED TO MINT DURING THIS PHASE');
     } else {
-      setBuyButtonText('MINT WITH CRYPTO');
+      setBuyButtonText('MINT');
       setShowBuyModal(true);
     }
   };
 
-  const handleCardClick = async () => {
-    if (!isMintLive) {
-      return handleError('MINT IS NOT LIVE YET');
-    }
-    if (isPreSale && !active) {
-      return handleError('MUST CONNECT WALLET DURING PRESALE FOR ALLOWLIST');
-    }
-    if (
-      isPreSale &&
-      active &&
-      allowlistInfo.allowlistStatus === AllowlistStatus.NotAllowlisted
-    ) {
-      return handleError('MUST BE ALLOWLISTED TO MINT DURING PRESALE');
-    }
-
-    setBuyButtonText('MINT WITH CARD');
-    setShowBuyModal(true);
-  };
-
-  const handleCryptoMint = async (numberOfTokens: number) => {
-    const payableAmount = numberOfTokens * mintPrice;
-
+  const handleMintClick = async (numberOfTokens: number) => {
     try {
       if (
-        isPreSale &&
+        isDiscountMint &&
         allowlistInfo.allowlistStatus === AllowlistStatus.Allowlisted
       ) {
-        presaleMint(
-          storefrontContract,
-          tokenContract,
+        const payableAmount = numberOfTokens * discountPrice;
+
+        discountMint(
+          contract,
           maxSupply,
           account as string,
           payableAmount,
@@ -107,9 +80,10 @@ const Web3Buttons: React.FC = () => {
           setShowBuyModal,
         );
       } else {
+        const payableAmount = numberOfTokens * mintPrice;
+
         publicMint(
-          storefrontContract,
-          tokenContract,
+          contract,
           maxSupply,
           account as string,
           payableAmount,
@@ -136,13 +110,12 @@ const Web3Buttons: React.FC = () => {
     setShowBuyModal(false);
     setShowErrorModal(false);
     setShowSuccessModal(false);
-    setShowCardDiscountModal(false);
   };
 
   useEffect(() => {
     if (active) {
       if (account) {
-        getAllowlistStatus(account as string)
+        getAllowlistStatus(account)
           .then((status) => {
             if (status) setAllowlistInfo(status);
           })
@@ -176,8 +149,8 @@ const Web3Buttons: React.FC = () => {
       {showBuyModal && (
         <BuyModal
           setShowModal={setShowBuyModal}
-          isDiscount={isDiscount}
-          handleCryptoMint={handleCryptoMint}
+          isDiscount={isDiscountMint}
+          handleCryptoMint={handleMintClick}
           handleError={handleError}
           buyButtonText={buyButtonText}
         />

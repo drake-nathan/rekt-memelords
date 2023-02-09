@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { NavLink } from 'components/NavBar/NavBar.styled';
-import { SubtleText, SubtleDiv } from 'components/Hero/Hero.styled';
 
 export const FallbackContainer = styled.div`
   display: flex;
@@ -8,42 +6,23 @@ export const FallbackContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   padding: 1em;
-  gap: 1.5em;
+  gap: 3em;
 `;
 
-export const BackArrow = styled(NavLink)`
-  font-size: 24px;
-  cursor: pointer;
-`;
-
-export const BackLink = styled(NavLink)`
-  cursor: pointer;
-  margin-bottom: 3em;
-`;
-
-export const TextDiv = styled(SubtleDiv)``;
-
-export const Text = styled(SubtleText)`
-  font-size: 20px;
+export const Title = styled.h1`
+  font-size: 3rem;
   text-align: center;
-`;
-
-export const HDLTitle = styled.h1`
-  font-size: 68px;
-  text-align: center;
-  border: 3px solid white;
   width: 80%;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-bottom: 0.5em;
+`;
 
-  @media (max-width: 600px) {
-    font-size: 48px;
-  }
+export const Subtle = styled.h3`
+  color: ${({ theme }) => theme.colors.textOffset};
+`;
 
-  @media (max-width: 450px) {
-    font-size: 34px;
+export const Text = styled.h4`
+  :hover {
+    color: ${({ theme }) => theme.colors.textOffset};
   }
 `;

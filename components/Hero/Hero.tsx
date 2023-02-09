@@ -1,44 +1,40 @@
+import * as St from './Hero.styled';
 import { useEffect, useState } from 'react';
 import { useMintDetails } from 'hooks/useMintDetails';
 import Web3Buttons from '../Web3/Web3Buttons';
 import { useContract } from 'hooks/useContract';
-import { fetchCurrentSupply } from 'web3/web3Fetches';
-import * as St from './Hero.styled';
+import { fetchCurrentSupply } from 'web3/contractInteractions';
+import Image from 'next/image';
 
 const Hero = (): JSX.Element => {
   const { maxSupply, mintPrice } = useMintDetails();
 
   const [currentSupply, setCurrentSupply] = useState(maxSupply);
 
-  const currentContract = useContract();
-
-  const tC = currentContract.tokenContract;
+  const { contract } = useContract();
 
   useEffect(() => {
-    fetchCurrentSupply(tC).then((response) => setCurrentSupply(response));
+    fetchCurrentSupply(contract).then((response) => setCurrentSupply(response));
   }, []);
 
   return (
-    <St.HeroContainer>
-      <St.Title>rekt Memelords</St.Title>
-      <St.SubTitle>[ Memelord District ]</St.SubTitle>
+    <St.Container>
+      <St.ImageWrapper>
+        <Image src="/MLD.gif" alt="Memelord Districts" fill />
+      </St.ImageWrapper>
 
-      <Web3Buttons />
-
-      <St.SubtleDiv>
-        <St.YellowText>
-          {mintPrice}
-          <St.SubtleText> (ETH).</St.SubtleText>
-        </St.YellowText>
-
-        <St.YellowText>
-          {currentSupply < maxSupply ? maxSupply - currentSupply : maxSupply}{' '}
-          <St.SubtleText>
-            {currentSupply < maxSupply ? 'NFTS REMAINING' : 'NFTS TOTAL'}.
-          </St.SubtleText>
-        </St.YellowText>
-      </St.SubtleDiv>
-    </St.HeroContainer>
+      <St.MintSection>
+        <St.Title>[ Memelord District ]</St.Title>
+        <Web3Buttons />
+        <St.InfoDiv>
+          <St.Text>{mintPrice}(ETH)</St.Text>
+          <St.Text>
+            {currentSupply < maxSupply ? maxSupply - currentSupply : maxSupply}{' '}
+            {currentSupply < maxSupply ? 'NFTS REMAINING' : 'NFTS TOTAL'}
+          </St.Text>
+        </St.InfoDiv>
+      </St.MintSection>
+    </St.Container>
   );
 };
 

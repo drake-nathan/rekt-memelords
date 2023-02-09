@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { YellowText } from 'components/Hero/Hero.styled';
 
 export const ModalBackground = styled.div`
   height: 150vh;
@@ -84,7 +83,7 @@ export const Link = styled.a`
   line-height: 1.5;
 
   :hover {
-    color: ${(props) => props.theme.colors.hover};
+    color: ${(props) => props.theme.colors.textOffset};
   }
 `;
 
@@ -159,9 +158,10 @@ export const SubtleText = styled.span`
 `;
 
 export const UnitText = styled(Text)`
-  color: ${(props) => props.theme.colors.hover};
+  color: ${(props) => props.theme.colors.textOffset};
 `;
 
-export const CounterText = styled(YellowText)`
+export const CounterText = styled.span`
   font-size: 30px;
+  color: ${(props) => props.theme.colors.textOffset};
 `;

@@ -1,12 +1,24 @@
 import styled from 'styled-components';
 
-export const HeroContainer = styled.div`
+export const Container = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1em;
+  padding: 1em;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
+`;
+
+export const MintSection = styled.div`
+  min-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
   gap: 1.5em;
-  margin-bottom: 1em;
 `;
 
 export const ButtonContainer = styled.div`
@@ -17,25 +29,16 @@ export const ButtonContainer = styled.div`
   gap: 1em;
   width: 35%;
   max-width: 450px;
+  /* 
   @media (max-width: 600px) {
     flex-direction: column;
     gap: 1.5em;
-  }
+  } */
 `;
 
-export const Title = styled.h1`
-  font-weight: 500;
-  letter-spacing: 1.25px;
-
-  @media (max-width: 600px) {
-    font-size: 1.25rem;
-    text-align: center;
-  }
-`;
-
-export const SubTitle = styled.h3`
+export const Title = styled.h3`
   font-weight: 400;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
 
   @media (max-width: 600px) {
     font-size: 1rem;
@@ -43,7 +46,22 @@ export const SubTitle = styled.h3`
   }
 `;
 
-export const SubtleDiv = styled.div`
+export const ImageWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 550px;
+  aspect-ratio: 1/1;
+
+  @media (max-width: 1100px) {
+    max-width: 450px;
+  }
+
+  @media (max-width: 900px) {
+    max-width: 350px;
+  }
+`;
+
+export const InfoDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -55,13 +73,8 @@ export const SubtleDiv = styled.div`
   }
 `;
 
-export const SubtleText = styled.span`
+export const Text = styled.span`
   color: ${(props) => props.theme.colors.textOffset};
-  font-size: 16px;
-`;
-
-export const YellowText = styled.span`
-  color: ${(props) => props.theme.colors.hover};
   font-size: 16px;
 `;
 
@@ -86,8 +99,8 @@ export const Button = styled.button`
     font-weight: 700;
   }
 
-  @media (max-width: 600px) {
+  /* @media (max-width: 600px) {
     width: 300px;
     min-width: 150px;
-  }
+  } */
 `;

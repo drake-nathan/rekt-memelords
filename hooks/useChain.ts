@@ -1,7 +1,4 @@
-export enum Chain {
-  mainnet = 'mainnet',
-  goerli = 'goerli',
-}
+import { Chain } from 'web3/types';
 
 export const useChain = () => {
   const chainId = Chain.goerli;

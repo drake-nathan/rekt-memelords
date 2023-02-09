@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
+import { useChain } from './useChain';
 
 export const useWeb3 = () => {
-  const rpc = process.env.NEXT_PUBLIC_RPC_URL_1 as string;
+  const { rpc } = useChain();
+
   const { active, library } = useWeb3React();
 
   const web3Provider = new Web3.providers.HttpProvider(rpc);

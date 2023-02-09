@@ -17,19 +17,14 @@ const BuyModal: React.FC<Props> = ({
   handleError,
   buyButtonText,
 }) => {
-  const { mintPrice, maxMint, discountPrice } = useMintDetails();
+  const { mintPrice, maxPublicMint, discountPrice, maxDiscountMint } =
+    useMintDetails();
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(
     isDiscount ? discountPrice.toFixed(2) : mintPrice.toFixed(2),
   );
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleCardMint = (quantity: number) => {
-    handleError('Card minting not yet implemented');
-  };
+  const maxMint = isDiscount ? maxDiscountMint : maxPublicMint;
 
   const minMint = 1;
 
@@ -42,7 +37,7 @@ const BuyModal: React.FC<Props> = ({
 
   return (
     <>
-      <St.BuyModalBackground onClick={handleCloseModal} />
+      <St.BuyModalBackground onClick={() => setShowModal(false)} />
       <St.BuyModalContainer>
         <St.MsgDiv style={{ justifyContent: 'center' }}>
           <St.Text>

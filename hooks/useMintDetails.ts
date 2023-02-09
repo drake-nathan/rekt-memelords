@@ -1,38 +1,83 @@
 import { useState, useEffect } from 'react';
+import { fetchCurrentSupply, fetchMintPhase } from 'web3/contractInteractions';
+import { useContract } from './useContract';
+import { MintPhase } from 'web3/types';
 
 export const useMintDetails = () => {
-  const currentTime = new Date().getTime();
-  const mintStart = Date.parse('2022-09-17T14:22:00-0400');
-  const preSalePeriod = 24 * 60 * 60 * 1000;
-  const publicStart = mintStart + preSalePeriod;
-  const mintEnd = Date.parse('2023-10-18T14:22:00-0400');
+  const { contract } = useContract();
 
-  const mintPrice = 0.06;
-  const discountPrice = 0.06;
-  const maxSupply = 1000;
-  const maxMint = 10;
+  const currentTime = new Date();
+  const mintStart = new Date('2023-02-09T13:00:00-0600');
+  const discountMintPeriod = 1; // days
+  // Public start 11/18
+  const publicStart = new Date(
+    mintStart.getTime() + discountMintPeriod * 24 * 60 * 60 * 1000,
+  );
+  const publicMintPeriod = 1; // days
+  const mintEnd = new Date(
+    publicStart.getTime() + publicMintPeriod * 24 * 60 * 60 * 1000,
+  );
+
+  const mintPrice = 0.069;
+  const discountPrice = 0.042;
+  const maxSupply = 420;
+  const maxPublicMint = 5;
+  const maxDiscountMint = 10;
 
   const [isMintLive, setIsMintLive] = useState(false);
-  const [isPreSale, setIsPreSale] = useState(false);
+  const [isDiscountMint, setIsDiscountMint] = useState(false);
+  const [currentSupply, setCurrentSupply] = useState<number>();
 
   useEffect(() => {
-    if (currentTime >= mintStart && currentTime <= mintEnd) {
-      setIsMintLive(true);
-    }
+    fetchMintPhase(contract)
+      .then((mintPhase) => {
+        if (mintPhase) {
+          if (mintPhase === MintPhase.public) {
+            setIsMintLive(true);
+            setIsDiscountMint(false);
+          } else if (mintPhase === MintPhase.discount) {
+            setIsMintLive(true);
+            setIsDiscountMint(true);
+          } else if (mintPhase === MintPhase.closed) {
+            setIsMintLive(false);
+            setIsDiscountMint(false);
+          } else console.error('Invalid mint phase');
+        } else {
+          if (currentTime >= mintStart && currentTime <= mintEnd) {
+            setIsMintLive(true);
+          }
 
-    if (currentTime >= mintStart && currentTime <= publicStart) {
-      setIsPreSale(true);
+          if (currentTime >= mintStart && currentTime <= publicStart) {
+            setIsDiscountMint(true);
+          }
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    try {
+      fetchCurrentSupply(contract).then((supply) => {
+        if (supply) {
+          setCurrentSupply(supply);
+        }
+      });
+    } catch (error) {
+      console.error(error);
     }
-  }, [currentTime]);
+  }, [currentSupply]);
 
   return {
     isMintLive,
-    isPreSale,
+    isDiscountMint,
     mintStart,
     mintEnd,
     mintPrice,
+    publicStart,
     discountPrice,
     maxSupply,
-    maxMint,
+    currentSupply,
+    maxPublicMint,
+    maxDiscountMint,
   };
 };

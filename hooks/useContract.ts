@@ -1,28 +1,30 @@
-import { AbiItem } from 'web3-utils';
-import storefrontAbi from '../web3/HdlStorefront.abi.json';
-import tokenContractAbi from '../web3/HdlGenesisToken.abi.json';
+import { type AbiItem } from 'web3-utils';
+import Abi from 'web3/abi/MemelordDistrict.abi.json';
 import { useWeb3 } from './useWeb3';
+import { useChain } from './useChain';
+import { Chain } from 'web3/types';
 
 export const useContract = () => {
+  const { chainId } = useChain();
   const web3 = useWeb3();
-  const storefrontContractAddress =
-    '0xaFD7183Abc81D31984E4DC3a6658cb0aCf910DE5';
-  const tokenContractAddress = '0x5343067232fE0B555f7Cb48B0C3398E7d51855BE';
 
-  const storefrontContract = new web3.eth.Contract(
-    storefrontAbi as AbiItem[],
-    storefrontContractAddress,
-  );
+  const contractAddress = {
+    [Chain.mainnet]: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    [Chain.goerli]: '0x8B22A420b0dF9264AdcbFD214711989f4e42DE91',
+  };
 
-  const tokenContract = new web3.eth.Contract(
-    tokenContractAbi as AbiItem[],
-    tokenContractAddress,
+  const abi = {
+    [Chain.mainnet]: Abi as AbiItem[],
+    [Chain.goerli]: Abi as AbiItem[],
+  };
+
+  const contract = new web3.eth.Contract(
+    abi[chainId],
+    contractAddress[chainId].toLowerCase(),
   );
 
   return {
-    storefrontContract,
-    tokenContract,
-    storefrontContractAddress,
-    tokenContractAddress,
+    address: contractAddress,
+    contract,
   };
 };

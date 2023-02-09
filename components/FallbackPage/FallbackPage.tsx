@@ -5,22 +5,28 @@ import * as St from './Fallback.Syled';
 const FallbackPage: React.FC = () => {
   const { mintStart } = useMintDetails();
 
-  const now = Date.now();
+  const now = new Date();
 
   return (
     <>
       <St.FallbackContainer>
-        <St.HDLTitle>ĦYGIΣNIC DRΣ$$ LΣΛGUΣ CØRPØRΛTIØN</St.HDLTitle>
+        <St.Title>rekt Memelords</St.Title>
         {mintStart > now ? (
           <>
-            <St.Text>The Pre-Genesis Deity pre-sale begins in...</St.Text>
+            <St.Subtle>The Memelord District mint begins soon...</St.Subtle>
           </>
         ) : (
-          <St.Text>The mint you are trying access is no longer active.</St.Text>
+          <St.Subtle>
+            The mint you are trying access is no longer active.
+          </St.Subtle>
         )}
-        <St.BackLink href="https://www.hdlcorp.io/">
-          back to hdlcorp.io
-        </St.BackLink>
+        <a
+          href="https://pbs.twimg.com/media/FodT_tnXEBIVC0v?format=jpg&name=large"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <St.Text>here are bern&apos;s feet</St.Text>
+        </a>
       </St.FallbackContainer>
     </>
   );
