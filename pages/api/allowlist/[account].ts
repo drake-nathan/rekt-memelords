@@ -15,6 +15,7 @@ export default async function handler(
 
   const lowerCaseAccount = account.toString().toLowerCase();
 
+  // link to folder in root called 'proofs'
   const jsonDirectory = path.join(process.cwd(), 'proofs');
 
   try {
@@ -22,6 +23,8 @@ export default async function handler(
       jsonDirectory + `/${lowerCaseAccount}.json`,
       'utf8',
     );
+
+    console.log('merkleJson', merkleJson);
 
     res.status(200).json(merkleJson);
   } catch (error) {

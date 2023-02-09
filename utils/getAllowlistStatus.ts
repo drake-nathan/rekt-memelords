@@ -6,7 +6,9 @@ export enum AllowlistStatus {
 }
 
 export const getAllowlistStatus = async (account: string) => {
-  const allowlistUrl = `api/allowlist/${account}`;
+  const allowlistUrl = `https://rekt-memelords-git-goerli-drake-nathan.vercel.app/api/allowlist/${account}`;
+
+  console.log('allowlistUrl', allowlistUrl);
 
   try {
     const response = await axios.get(allowlistUrl);
@@ -20,7 +22,6 @@ export const getAllowlistStatus = async (account: string) => {
       };
     }
   } catch (error) {
-    console.error(error);
     return {
       allowlistStatus: AllowlistStatus.NotAllowlisted,
       amountOfTokens: 0,
