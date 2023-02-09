@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const ModalBackground = styled.div`
-  height: 150vh;
+  height: 100vh;
   width: 100%;
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 30;
   background: rgba(0, 0, 0, 0.6);
-  color: pink;
   backdrop-filter: blur(4px);
   cursor: pointer;
 
