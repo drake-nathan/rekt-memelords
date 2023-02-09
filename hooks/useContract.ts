@@ -24,10 +24,6 @@ export const useContract = () => {
     contractAddress[chainId].toLowerCase(),
   );
 
-  useEffect(() => {
-    console.info('contract', contractAddress[chainId].toLowerCase());
-  }, [chainId]);
-
   return {
     address: contractAddress[chainId].toLowerCase(),
     contract,
