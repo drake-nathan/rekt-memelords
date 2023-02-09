@@ -153,19 +153,17 @@ const Web3Buttons = (): JSX.Element => {
       closeAllModals();
     }
 
-    if (active) {
-      if (account && mintPhase === MintPhase.discount) {
-        const allowListInfo = getAllowlistStatus(account);
-        console.info(allowListInfo);
-        setAllowlistInfo(allowListInfo);
-        setMaxMint(allowListInfo.amountOfTokens);
-      }
-
-      setCryptoButtonText('MINT');
-      setTimeout(() => {
-        setShowConnectModal(false);
-      }, 2000);
+    if (account && mintPhase === MintPhase.discount) {
+      const allowListInfo = getAllowlistStatus(account);
+      console.info(allowListInfo);
+      setAllowlistInfo(allowListInfo);
+      setMaxMint(allowListInfo.amountOfTokens);
     }
+
+    setCryptoButtonText('MINT');
+    setTimeout(() => {
+      setShowConnectModal(false);
+    }, 2000);
 
     if (account) {
       web3.eth
@@ -175,7 +173,7 @@ const Web3Buttons = (): JSX.Element => {
         })
         .catch(console.error);
     }
-  }, [active]);
+  }, [active, account]);
 
   return (
     <St.ButtonContainer>
