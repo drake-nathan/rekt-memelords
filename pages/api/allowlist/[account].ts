@@ -8,11 +8,18 @@ export default async function handler(
 ) {
   const { account } = req.query;
 
+  if (!account) {
+    res.status(400).json({ error: 'No account passed' });
+    return;
+  }
+
+  const lowerCaseAccount = account.toString().toLowerCase();
+
   const jsonDirectory = path.join(process.cwd(), 'proofs');
 
   try {
     const merkleJson = await fs.readFile(
-      jsonDirectory + `/${account}.json`,
+      jsonDirectory + `/${lowerCaseAccount}.json`,
       'utf8',
     );
 
