@@ -1,8 +1,7 @@
-import React from 'react';
-import { useMintDetails } from 'hooks/useMintDetails';
 import * as St from './Fallback.Syled';
+import { useMintDetails } from 'hooks/useMintDetails';
 
-const FallbackPage: React.FC = () => {
+const FallbackPage = (): JSX.Element => {
   const { mintStart } = useMintDetails();
 
   const now = new Date();
@@ -10,7 +9,7 @@ const FallbackPage: React.FC = () => {
   return (
     <>
       <St.FallbackContainer>
-        <St.Title>rekt Memelords</St.Title>
+        <St.Title>rekt memelords</St.Title>
         {mintStart > now ? (
           <>
             <St.Subtle>The Memelord District mint begins soon...</St.Subtle>

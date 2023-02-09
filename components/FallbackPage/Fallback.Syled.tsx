@@ -13,8 +13,7 @@ export const FallbackContainer = styled.div`
 
 export const Title = styled.h1`
   font-size: 3rem;
-  text-align: center;
-  width: 80%;
+  font-weight: 500;
 `;
 
 export const Subtle = styled.h3`
@@ -22,6 +21,7 @@ export const Subtle = styled.h3`
 `;
 
 export const Text = styled.h4`
+  font-weight: 500;
   :hover {
     color: ${({ theme }) => theme.colors.textOffset};
   }

@@ -32,7 +32,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>rekt Memelords | Memelord District Mint</title>
+        <title>rekt memelords | Memelord District Mint</title>
         <meta name="description" content="Rekt Memelords" />
       </Head>
 

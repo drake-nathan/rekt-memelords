@@ -3,7 +3,7 @@ import * as St from './Header.styled';
 const Header = (): JSX.Element => {
   return (
     <St.NavContainer>
-      <St.Title>rekt Memelords</St.Title>
+      <St.Title>rekt memelords</St.Title>
 
       <St.TwitterDiv>
         <a
