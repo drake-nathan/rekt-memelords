@@ -34,6 +34,7 @@ export const Title = styled.h1`
 `;
 
 export const SubTitle = styled.h3`
+  font-weight: 400;
   margin-bottom: 1.5em;
 
   @media (max-width: 600px) {

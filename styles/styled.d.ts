@@ -5,9 +5,9 @@ declare module 'styled-components' {
     borderRadius: string;
     colors: {
       bgMain: string;
+      bgOffset: string;
       textMain: string;
       textOffset: string;
-      hover: string;
     };
   }
 }

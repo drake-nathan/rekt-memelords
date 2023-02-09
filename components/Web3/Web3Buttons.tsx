@@ -170,9 +170,6 @@ const Web3Buttons: React.FC = () => {
   return (
     <St.ButtonContainer>
       <St.Button onClick={handleCryptoClick}>{cryptoButtonText}</St.Button>
-      {isMintLive && !isPreSale && (
-        <St.Button onClick={handleCardClick}>PAY WITH CARD</St.Button>
-      )}
 
       {showConnectModal && <ConnectModal setShowModal={setShowConnectModal} />}
 

@@ -10,6 +10,7 @@ import { sliderMedia } from 'components/Slider/sliderMedia';
 import { useMintDetails } from 'hooks/useMintDetails';
 import Hero from 'components/Hero/Hero';
 import FallbackPage from 'components/FallbackPage/FallbackPage';
+import Image from 'next/image';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -59,12 +60,8 @@ const Home: NextPage = () => {
   return (
     <AppContainer>
       <Head>
-        <title>Pre Genesis Mint (The Deity)</title>
-        <meta
-          name="description"
-          content="HDL will mint its iconic corporate pigeon logo for free for the
-            public to own."
-        />
+        <title>Rekt Memelords (Meme Lite District)</title>
+        <meta name="description" content="Rekt Memelords" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
 
@@ -72,24 +69,8 @@ const Home: NextPage = () => {
         <>
           <NavBar />
           <Hero />
-          <Slider>
-            {sliderMedia.map((nft) => (
-              <div key={nft.id}>
-                <video loop autoPlay muted webkit-playsInline playsInline>
-                  <source src={nft.video_url} type="video/mp4" />
-                </video>
-              </div>
-            ))}
-          </Slider>
-          <p>
-            The Pre-Genesis Collection, otherwise referred to as “The Deity,”
-            will feature 1000 NFTs as unique digital representations of the
-            sculpture “The Deity” in various virtual backgrounds. In tandem with
-            the offering of unique digital sculptures, HDL will also donate the
-            physical sculpture and will announce the location. This collection
-            will be available for purchase on September 18, 2022 at 2:22 pm EST
-            via the HDL website.
-          </p>
+          <img src="/MLD.gif" alt="Memelord District" width="500" />
+          <p>Dicks, heheh</p>
         </>
       ) : (
         <FallbackPage />
