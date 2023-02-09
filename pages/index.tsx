@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
@@ -32,8 +31,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>rekt memelords | Memelord District Mint</title>
-        <meta name="description" content="Rekt Memelords" />
+        <title>rekt memelords | MemeLord District Mint</title>
+        <meta name="description" content="rekt memelords" />
       </Head>
 
       {!showFallback ? (

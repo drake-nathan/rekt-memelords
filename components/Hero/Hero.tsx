@@ -20,11 +20,11 @@ const Hero = (): JSX.Element => {
   return (
     <St.Container>
       <St.ImageWrapper>
-        <Image src="/MLD.gif" alt="Memelord Districts" fill />
+        <Image src="/MLD.gif" alt="MemeLord District" fill />
       </St.ImageWrapper>
 
       <St.MintSection>
-        <St.Title>[ Memelord District ]</St.Title>
+        <St.Title>[ MemeLord District ]</St.Title>
         <Web3Buttons />
         <St.InfoDiv>
           <St.Text>{mintPrice}(ETH)</St.Text>

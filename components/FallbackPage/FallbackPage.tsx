@@ -12,7 +12,7 @@ const FallbackPage = (): JSX.Element => {
         <St.Title>rekt memelords</St.Title>
         {mintStart > now ? (
           <>
-            <St.Subtle>The Memelord District mint begins soon...</St.Subtle>
+            <St.Subtle>The MemeLord District mint begins soon...</St.Subtle>
           </>
         ) : (
           <St.Subtle>
