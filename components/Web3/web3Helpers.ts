@@ -11,20 +11,20 @@ import { MintPhase } from 'web3/types';
 
 // mainnet
 // const urls = {
-//   openSea: `https://opensea.io/assets/ethereum`,
+//  // openSea: `https://opensea.io/assets/ethereum`,
 //   etherscan: `https://etherscan.io/tx`,
 // };
 
 //goerli
 const urls = {
-  openSea: `https://testnets.opensea.io/assets/goerli`,
+  // openSea: `https://testnets.opensea.io/assets/goerli`,
   etherscan: `https://goerli.etherscan.io/tx`,
 };
 // FIXME: Switch back to mainnet
 
 export interface ISuccessInfo {
   message: string;
-  openseaLink: string;
+  // openseaLink: string;
   etherscanLink: string;
 }
 
@@ -60,8 +60,8 @@ export const discountMint = async (
   const txHash = txObj.transactionHash;
   if (!txHash) return handleError('MINT FAILED');
 
-  const tokenId = txObj?.events?.Transfer?.returnValues?.tokenId as string;
-  const contractAddress = txObj?.events?.Transfer?.address as string;
+  // const tokenId = txObj?.events?.Transfer?.returnValues?.tokenId as string;
+  // const contractAddress = txObj?.events?.Transfer?.address as string;
 
   setBuyButtonText('MINTED');
 
@@ -69,8 +69,8 @@ export const discountMint = async (
     message: `SUCCESSFULLY MINTED ${numberOfTokens} NFT${
       numberOfTokens > 1 ? 'S' : ''
     }`,
-    etherscanLink: `${urls.etherscan}${txHash}`,
-    openseaLink: `${urls.openSea}/${contractAddress}/${tokenId}`,
+    etherscanLink: `${urls.etherscan}/${txHash}`,
+    // openseaLink: `${urls.openSea}/${contractAddress}/${tokenId}`,
   };
 
   setShowBuyModal(false);
@@ -89,10 +89,10 @@ export const publicMint = async (
   setShowBuyModal: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   const isMintActive = (await fetchMintPhase(contract)) === MintPhase.public;
-  if (!isMintActive) return handleError('MINT IS NOT ACTIVE');
+  if (!isMintActive) return handleError('Mint is not active');
 
   const isSupplyRemaining = (await fetchCurrentSupply(contract)) < maxSupply;
-  if (!isSupplyRemaining) return handleError('MINT HAS SOLD OUT');
+  if (!isSupplyRemaining) return handleError('Mint has sold out');
 
   setBuyButtonText('MINTING...');
   const txObj = await callPublicMint(
@@ -106,17 +106,16 @@ export const publicMint = async (
   const txHash = txObj.transactionHash;
   if (!txHash) return handleError('MINT FAILED');
 
-  const tokenId = txObj?.events?.Transfer?.returnValues?.tokenId as string;
-  const contractAddress = txObj?.events?.Transfer?.address as string;
+  // const tokenId = txObj?.events?.Transfer?.returnValues?.tokenId as string;
+  // const contractAddress = txObj?.events?.Transfer?.address as string;
 
   setBuyButtonText('MINTED');
 
   const successInfo: ISuccessInfo = {
-    message: `SUCCESSFULLY MINTED ${numberOfTokens} NFT${
-      numberOfTokens > 1 ? 'S' : ''
+    message: `Successfully minted ${numberOfTokens} NFT${
+      numberOfTokens > 1 ? 's' : ''
     }`,
-    etherscanLink: `${urls.etherscan}${txHash}`,
-    openseaLink: `${urls.openSea}/${contractAddress}/${tokenId}`,
+    etherscanLink: `${urls.etherscan}/${txHash}`,
   };
 
   setShowBuyModal(false);

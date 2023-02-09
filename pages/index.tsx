@@ -8,7 +8,7 @@ import FallbackPage from 'components/FallbackPage/FallbackPage';
 
 const Home: NextPage = () => {
   const nodeEnv = process.env.NODE_ENV;
-  const { isMintLive } = useMintDetails();
+  const { isPublicMintLive: isMintLive } = useMintDetails();
   const { query } = useRouter();
 
   const [showFallback, setShowFallback] = useState(true);

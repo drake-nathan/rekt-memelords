@@ -9,8 +9,8 @@ export const useContract = () => {
   const web3 = useWeb3();
 
   const contractAddress = {
-    [Chain.mainnet]: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    [Chain.goerli]: '0x8B22A420b0dF9264AdcbFD214711989f4e42DE91',
+    [Chain.mainnet]: '0xFfb31563Eb3Bec1fDcB7321766d3EaF773CA6989',
+    [Chain.goerli]: '0xFfb31563Eb3Bec1fDcB7321766d3EaF773CA6989',
   };
 
   const abi = {

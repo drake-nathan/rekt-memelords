@@ -1,13 +1,13 @@
-import React from 'react';
-import { ISuccessInfo } from 'components/Web3/web3Helpers';
 import * as St from './Modals.styled';
+import { type ISuccessInfo } from 'components/Web3/web3Helpers';
+import { sono } from 'styles/fonts';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   successInfo: ISuccessInfo;
 }
 
-const ErrorModal: React.FC<Props> = ({ setShowModal, successInfo }) => {
+const ErrorModal = ({ setShowModal, successInfo }: Props): JSX.Element => {
   const { message, etherscanLink } = successInfo;
 
   const handleCloseModal = () => {
@@ -17,19 +17,27 @@ const ErrorModal: React.FC<Props> = ({ setShowModal, successInfo }) => {
   return (
     <>
       <St.ModalBackground onClick={handleCloseModal}></St.ModalBackground>
+
       <St.CenterModalContainer>
         <St.LinkDiv>
           <St.Text>{message}</St.Text>
-          {/* <St.Link href={openseaLink} target="_blank">
-            OPENSEA
+          {/* 
+          <St.Link href={openseaLink} target="_blank">
+            OpenSea
           </St.Link> */}
+
           <St.Link href={etherscanLink} target="_blank">
-            ETHERSCAN
+            Etherscan
           </St.Link>
         </St.LinkDiv>
 
         <St.LittleButtonDiv>
-          <St.LittleButton onClick={handleCloseModal}>CLOSE</St.LittleButton>
+          <St.LittleButton
+            className={sono.className}
+            onClick={handleCloseModal}
+          >
+            CLOSE
+          </St.LittleButton>
         </St.LittleButtonDiv>
       </St.CenterModalContainer>
     </>

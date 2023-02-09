@@ -5,7 +5,11 @@ import { MintPhase } from './types';
 export const fetchMintPhase = async (
   contract: Contract,
 ): Promise<MintPhase> => {
-  return (await contract.methods.currentPhase().call()) as MintPhase;
+  const currentPhase = (await await contract.methods
+    .currentPhase()
+    .call()) as string;
+
+  return Number(currentPhase) as MintPhase;
 };
 
 export const fetchCurrentSupply = async (
@@ -40,6 +44,6 @@ export const callPublicMint = async (
   numberOfTokens: number,
 ) => {
   return await contract.methods
-    .mintTokens(numberOfTokens)
+    .publicMint(numberOfTokens)
     .send({ from: account, value: toWei(payableAmount.toString(), 'ether') });
 };

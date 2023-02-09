@@ -53,7 +53,7 @@ export const CenterModalContainer = styled(ModalContainer)`
 
 export const MsgDiv = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 1em;
 `;
@@ -76,7 +76,7 @@ export const Text = styled.span`
 `;
 
 export const Link = styled.a`
-  color: ${(props) => props.theme.colors.textMain};
+  color: ${(props) => props.theme.colors.textOffset};
   font-size: 1.25rem;
   font-weight: 500;
   max-width: 30ch;
@@ -84,7 +84,7 @@ export const Link = styled.a`
   line-height: 1.5;
 
   :hover {
-    color: ${(props) => props.theme.colors.textOffset};
+    color: ${(props) => props.theme.colors.textMain};
   }
 `;
 
@@ -119,11 +119,6 @@ export const CenterButtonDiv = styled.div`
   gap: 1em;
 `;
 
-export const XButton = styled.img`
-  width: 1.25em;
-  cursor: pointer;
-`;
-
 export const LittleButtonDiv = styled.div`
   display: flex;
   gap: 2em;
@@ -156,10 +151,13 @@ export const PlusMinusButton = styled(Button)`
 
 export const SubtleText = styled.span`
   color: ${(props) => props.theme.colors.textOffset};
+  text-align: center;
+  max-width: 35ch;
+  line-height: 1.3;
 `;
 
 export const UnitText = styled(Text)`
-  color: ${(props) => props.theme.colors.textOffset};
+  color: ${(props) => props.theme.colors.textMain};
 `;
 
 export const CounterText = styled.span`

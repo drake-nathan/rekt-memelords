@@ -73,6 +73,13 @@ export const InfoDiv = styled.div`
   }
 `;
 
+export const ExplainDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  text-align: center;
+`;
+
 export const Text = styled.span`
   color: ${(props) => props.theme.colors.textOffset};
   font-size: 16px;

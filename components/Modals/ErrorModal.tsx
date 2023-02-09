@@ -1,4 +1,4 @@
-import React from 'react';
+import { sono } from 'styles/fonts';
 import * as St from './Modals.styled';
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
   message: string;
 }
 
-const ErrorModal: React.FC<Props> = ({ setShowModal, message }) => {
+const ErrorModal = ({ setShowModal, message }: Props): JSX.Element => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -20,7 +20,12 @@ const ErrorModal: React.FC<Props> = ({ setShowModal, message }) => {
         </St.MsgDiv>
 
         <St.LittleButtonDiv>
-          <St.LittleButton onClick={handleCloseModal}>CLOSE</St.LittleButton>
+          <St.LittleButton
+            className={sono.className}
+            onClick={handleCloseModal}
+          >
+            CLOSE
+          </St.LittleButton>
         </St.LittleButtonDiv>
       </St.CenterModalContainer>
     </>

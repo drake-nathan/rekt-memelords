@@ -13,10 +13,7 @@ export const useMintDetails = () => {
   const publicStart = new Date(
     mintStart.getTime() + discountMintPeriod * 24 * 60 * 60 * 1000,
   );
-  const publicMintPeriod = 1; // days
-  const mintEnd = new Date(
-    publicStart.getTime() + publicMintPeriod * 24 * 60 * 60 * 1000,
-  );
+  const mintEnd = new Date('2023-02-14T13:23:59-0300');
 
   const mintPrice = 0.069;
   const discountPrice = 0.042;
@@ -24,8 +21,8 @@ export const useMintDetails = () => {
   const maxPublicMint = 5;
   const maxDiscountMint = 10;
 
-  const [isMintLive, setIsMintLive] = useState(false);
-  const [isDiscountMint, setIsDiscountMint] = useState(false);
+  const [isPublicMintLive, setIsMintLive] = useState(false);
+  const [isDiscountMintLive, setIsDiscountMint] = useState(false);
   const [currentSupply, setCurrentSupply] = useState<number>();
 
   useEffect(() => {
@@ -68,8 +65,8 @@ export const useMintDetails = () => {
   }, [currentSupply]);
 
   return {
-    isMintLive,
-    isDiscountMint,
+    isPublicMintLive,
+    isDiscountMintLive,
     mintStart,
     mintEnd,
     mintPrice,

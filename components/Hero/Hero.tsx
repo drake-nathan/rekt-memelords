@@ -7,11 +7,12 @@ import { fetchCurrentSupply } from 'web3/contractInteractions';
 import Image from 'next/image';
 
 const Hero = (): JSX.Element => {
-  const { maxSupply, mintPrice } = useMintDetails();
+  const { contract } = useContract();
+  const { maxSupply, mintPrice, discountPrice, isDiscountMintLive } =
+    useMintDetails();
 
   const [currentSupply, setCurrentSupply] = useState(maxSupply);
-
-  const { contract } = useContract();
+  const price = isDiscountMintLive ? discountPrice : mintPrice;
 
   useEffect(() => {
     fetchCurrentSupply(contract).then((response) => setCurrentSupply(response));
@@ -25,14 +26,26 @@ const Hero = (): JSX.Element => {
 
       <St.MintSection>
         <St.Title>[ MemeLord District ]</St.Title>
+
         <Web3Buttons />
+
         <St.InfoDiv>
-          <St.Text>{mintPrice}(ETH)</St.Text>
+          <St.Text>{price}(ETH)</St.Text>
+
           <St.Text>
             {currentSupply < maxSupply ? maxSupply - currentSupply : maxSupply}{' '}
             {currentSupply < maxSupply ? 'NFTS REMAINING' : 'NFTS TOTAL'}
           </St.Text>
         </St.InfoDiv>
+
+        {isDiscountMintLive && (
+          <St.ExplainDiv>
+            <St.Text>Red Lite District mint phase</St.Text>
+            <St.Text>Must be on pre-set allowlist</St.Text>
+            <St.Text>Public mint begins on Feb 11</St.Text>
+            <St.Text>Public mint price: {mintPrice}(ETH)</St.Text>
+          </St.ExplainDiv>
+        )}
       </St.MintSection>
     </St.Container>
   );

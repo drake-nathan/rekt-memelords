@@ -10,12 +10,11 @@ export enum Connectors {
 
 const RPC_URLS = {
   1: process.env.NEXT_PUBLIC_RPC_URL_1 as string,
-  4: process.env.NEXT_PUBLIC_RPC_URL_4 as string,
   5: process.env.NEXT_PUBLIC_RPC_URL_5 as string,
 };
 
 const injected = new InjectedConnector({
-  supportedChainIds: [1],
+  supportedChainIds: [1, 5],
 });
 
 const walletconnect = new WalletConnectConnector({

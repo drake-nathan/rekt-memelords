@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { useMintDetails } from 'hooks/useMintDetails';
 import * as St from './Modals.styled';
+import { useEffect, useState } from 'react';
+import { useMintDetails } from 'hooks/useMintDetails';
+import { sono } from 'styles/fonts';
+import { useWeb3 } from 'hooks/useWeb3';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,79 +10,92 @@ interface Props {
   handleCryptoMint: (quantity: number) => void;
   handleError: (error: string) => void;
   buyButtonText: string;
+  maxMint: number;
+  walletBalance: string;
 }
 
-const BuyModal: React.FC<Props> = ({
+const BuyModal = ({
   setShowModal,
   isDiscount,
   handleCryptoMint,
   handleError,
   buyButtonText,
-}) => {
-  const { mintPrice, maxPublicMint, discountPrice, maxDiscountMint } =
-    useMintDetails();
+  maxMint,
+  walletBalance,
+}: Props): JSX.Element => {
+  const { mintPrice, discountPrice } = useMintDetails();
+
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(
-    isDiscount ? discountPrice.toFixed(2) : mintPrice.toFixed(2),
+    isDiscount ? discountPrice.toFixed(3) : mintPrice.toFixed(3),
   );
 
-  const maxMint = isDiscount ? maxDiscountMint : maxPublicMint;
+  const price = isDiscount ? discountPrice : mintPrice;
 
   const minMint = 1;
 
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity >= minMint && newQuantity <= maxMint) {
+      const newTotal = newQuantity * price;
+
+      if (Number(newTotal) > Number(walletBalance)) {
+        return handleError('Insufficient funds');
+      }
+
       setQuantity(newQuantity);
-      setTotal((newQuantity * mintPrice).toFixed(2));
+      setTotal((newQuantity * price).toFixed(3));
     }
   };
 
   return (
     <>
       <St.BuyModalBackground onClick={() => setShowModal(false)} />
+
       <St.BuyModalContainer>
-        <St.MsgDiv style={{ justifyContent: 'center' }}>
-          <St.Text>
-            {isDiscount
-              ? 'YOU GET A FLOCKER DISCOUNT ON ONE MINT'
-              : 'CHOOSE QUANTITY'}
-          </St.Text>
+        <St.MsgDiv>
+          <St.Text>Choose Quantity</St.Text>
         </St.MsgDiv>
-        {!isDiscount && (
+
+        {isDiscount && (
           <St.UnitDiv>
-            <St.SubtleText>MAX: {maxMint}</St.SubtleText>
             <St.SubtleText>
-              PRICE: {isDiscount ? discountPrice : mintPrice}(ETH)
+              Any unclaimed discount tokens will be reallocated to the public
+              mint phase.
             </St.SubtleText>
           </St.UnitDiv>
         )}
-        <St.UnitDiv>
-          <St.UnitText style={{ color: '#fff', fontWeight: 500 }}>
-            TOTAL:{' '}
-            <St.UnitText style={{ marginLeft: '0.25em' }}>
-              {total}(ETH)
-            </St.UnitText>
-          </St.UnitText>
-        </St.UnitDiv>
-        {!isDiscount && (
-          <St.PlusMinusDiv>
-            <St.PlusMinusButton
-              disabled={quantity === minMint ? true : false}
-              onClick={() => handleQuantityChange(quantity - 1)}
-            >
-              -
-            </St.PlusMinusButton>
-            <St.CounterText>{quantity}</St.CounterText>
-            <St.PlusMinusButton
-              disabled={quantity === maxMint ? true : false}
-              onClick={() => handleQuantityChange(quantity + 1)}
-            >
-              +
-            </St.PlusMinusButton>
-          </St.PlusMinusDiv>
-        )}
 
-        <St.Button onClick={() => handleCryptoMint(quantity)}>
+        <St.UnitDiv>
+          <St.UnitText>Max: {maxMint}</St.UnitText>
+          <St.UnitText>Price: {price}(ETH)</St.UnitText>
+        </St.UnitDiv>
+
+        <St.UnitDiv>
+          <St.UnitText>Total: {total}(ETH)</St.UnitText>
+        </St.UnitDiv>
+
+        <St.PlusMinusDiv>
+          <St.PlusMinusButton
+            className={sono.className}
+            disabled={quantity === minMint ? true : false}
+            onClick={() => handleQuantityChange(quantity - 1)}
+          >
+            -
+          </St.PlusMinusButton>
+          <St.CounterText>{quantity}</St.CounterText>
+          <St.PlusMinusButton
+            className={sono.className}
+            disabled={quantity === maxMint ? true : false}
+            onClick={() => handleQuantityChange(quantity + 1)}
+          >
+            +
+          </St.PlusMinusButton>
+        </St.PlusMinusDiv>
+
+        <St.Button
+          className={sono.className}
+          onClick={() => handleCryptoMint(quantity)}
+        >
           {buyButtonText}
         </St.Button>
       </St.BuyModalContainer>

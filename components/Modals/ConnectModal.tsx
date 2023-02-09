@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import * as St from './Modals.styled';
+import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Connectors, connectors } from 'web3/connectors';
+import { sono } from 'styles/fonts';
 import { switchChain } from 'components/Web3/web3Helpers';
-import * as St from './Modals.styled';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ConnectModal: React.FC<Props> = ({ setShowModal }) => {
+const ConnectModal = ({ setShowModal }: Props): JSX.Element => {
   const { activate, active } = useWeb3React();
 
   const [txMsg, setTxMsg] = useState('');
@@ -17,11 +18,11 @@ const ConnectModal: React.FC<Props> = ({ setShowModal }) => {
     const connector = connectors[connectorToUse];
 
     try {
-      if (connectorToUse === Connectors.Injected) {
-        if (connector.getChainId().valueOf() !== '0x1') {
-          await switchChain('0x1');
-        }
-      }
+      // if (connectorToUse === Connectors.Injected) {
+      //   if (connector.getChainId().valueOf() !== '0x1') {
+      //     await switchChain('0x1');
+      //   }
+      // }
       await activate(connector);
     } catch (err) {
       console.error(err);
@@ -51,20 +52,26 @@ const ConnectModal: React.FC<Props> = ({ setShowModal }) => {
       <St.ModalContainer>
         <St.MsgDiv>
           <St.Text>{txMsg ? txMsg : 'CHOOSE CONNECT METHOD'}</St.Text>
-          <St.XButton src="/icons/x-icon-lg.svg" onClick={handleCloseModal} />
         </St.MsgDiv>
 
         <St.SubtleText>[ SET WALLET TO ETHEREUM NETWORK ]</St.SubtleText>
 
-        <St.Button onClick={() => handleConnectWallet(Connectors.Injected)}>
+        <St.Button
+          className={sono.className}
+          onClick={() => handleConnectWallet(Connectors.Injected)}
+        >
           METAMASK
         </St.Button>
         <St.Button
+          className={sono.className}
           onClick={() => handleConnectWallet(Connectors.WalletConnect)}
         >
           WALLETCONNECT
         </St.Button>
-        <St.Button onClick={() => handleConnectWallet(Connectors.Coinbase)}>
+        <St.Button
+          className={sono.className}
+          onClick={() => handleConnectWallet(Connectors.Coinbase)}
+        >
           COINBASE
         </St.Button>
       </St.ModalContainer>
