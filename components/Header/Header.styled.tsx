@@ -10,7 +10,7 @@ export const NavContainer = styled.div`
   padding: 1em;
   gap: 0.75em;
 
-  @media (max-width: 600px) {
+  @media (max-width: 860px) {
     flex-direction: column;
   }
 `;
@@ -24,6 +24,10 @@ export const TwitterDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75em;
+  /* 
+  @media (max-width: 550px) {
+    flex-direction: column;
+  } */
 `;
 
 export const TwitterItem = styled.div`

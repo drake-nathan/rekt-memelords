@@ -1,5 +1,5 @@
 import * as St from './Modals.styled';
-import { type ISuccessInfo } from 'components/Mint/mintHelpers';
+import { type ISuccessInfo } from 'components/Mint/helpers/mintFunctions';
 import { sono } from 'styles/fonts';
 
 interface Props {

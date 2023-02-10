@@ -4,24 +4,28 @@ import { useWeb3React } from '@web3-react/core';
 import { useEagerConnect } from 'hooks/useEagerConnect';
 import { useMintDetails } from 'hooks/useMintDetails';
 import { useContract } from 'hooks/useContract';
-import { useWeb3 } from 'hooks/useWeb3';
-import { publicMint, discountMint, ISuccessInfo } from './mintHelpers';
-import { sono } from 'styles/fonts';
 import {
-  checkIfUserHasClaimedDiscount,
-  checkTokensMintedByWallet,
-} from 'web3/contractInteractions';
+  publicMint,
+  discountMint,
+  ISuccessInfo,
+} from './helpers/mintFunctions';
+import { sono } from 'styles/fonts';
+import { checkIfUserHasClaimedDiscount } from 'web3/contractInteractions';
 import ConnectModal from 'components/Modals/ConnectModal';
 import BuyModal from 'components/Modals/BuyModal';
 import ErrorModal from 'components/Modals/ErrorModal';
 import SuccessModal from 'components/Modals/SuccessModal';
 import { getAllowlistStatus, AllowlistStatus } from 'utils/getAllowlistStatus';
 import { MintPhase } from 'web3/types';
+import { isMintClosed } from './helpers/helpers';
+import { useWalletBalance } from 'hooks/useWalletBalance';
+import { useTokensMinted } from 'hooks/useTokensMinted';
 
 const Mint = (): JSX.Element => {
   useEagerConnect();
-  const web3 = useWeb3();
   const { active, account } = useWeb3React();
+  const { walletBalance, reFetchWalletBalance } = useWalletBalance();
+  const { tokensMinted, reFetchTokensMinted } = useTokensMinted();
   const {
     mintPhase,
     mintPrice,
@@ -47,14 +51,11 @@ const Mint = (): JSX.Element => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successInfo, setSuccessInfo] = useState<ISuccessInfo>();
 
-  const [cryptoButtonText, setCryptoButtonText] = useState('CONNECT WALLET');
+  const [mintButtonText, setMintButtonText] = useState('CONNECT WALLET');
   const [buyButtonText, setBuyButtonText] = useState('MINT');
 
-  const [walletBalance, setWalletBalance] = useState('0');
   const [maxMint, setMaxMint] = useState(maxPublicMint);
   const price = mintPhase === MintPhase.discount ? discountPrice : mintPrice;
-
-  const [tokensMinted, setTokensMinted] = useState(0);
 
   const handleError = (error: string) => {
     setErrorMessage(error);
@@ -62,7 +63,7 @@ const Mint = (): JSX.Element => {
   };
 
   const handleMintClick = async () => {
-    if (mintPhase === MintPhase.closed) {
+    if (isMintClosed(mintPhase)) {
       return handleError('Mint is not live yet');
     }
 
@@ -75,12 +76,7 @@ const Mint = (): JSX.Element => {
       allowlistInfo.allowlistStatus === AllowlistStatus.NotAllowlisted
     ) {
       return handleError('Must be allowlisted to mint during this phase');
-    }
-
-    if (
-      mintPhase === MintPhase.discount &&
-      allowlistInfo.allowlistStatus === AllowlistStatus.Allowlisted
-    ) {
+    } else {
       const hasClaimed = await checkIfUserHasClaimedDiscount(
         contract,
         account as string,
@@ -91,11 +87,11 @@ const Mint = (): JSX.Element => {
       }
     }
 
-    if (Number(price) > Number(walletBalance)) {
+    if (walletBalance && Number(price) > Number(walletBalance)) {
       return handleError('Insufficient funds');
     }
 
-    if (tokensMinted >= maxDiscountMint) {
+    if (tokensMinted >= 10) {
       return handleError('Cannot mint more than 10 tokens per wallet total');
     }
 
@@ -147,6 +143,8 @@ const Mint = (): JSX.Element => {
   const handleSuccess = (successInfo: ISuccessInfo) => {
     setSuccessInfo(successInfo);
     setShowSuccessModal(true);
+    reFetchWalletBalance();
+    reFetchTokensMinted();
   };
 
   const closeAllModals = () => {
@@ -158,45 +156,28 @@ const Mint = (): JSX.Element => {
 
   useEffect(() => {
     if (!active) {
-      setCryptoButtonText('CONNECT WALLET');
+      setMintButtonText('CONNECT WALLET');
       closeAllModals();
     }
 
-    if (account && mintPhase === MintPhase.discount) {
+    if (active && account && mintPhase === MintPhase.discount) {
       const allowListInfo = getAllowlistStatus(account);
-      console.info(allowListInfo);
       setAllowlistInfo(allowListInfo);
       setMaxMint(allowListInfo.amountOfTokens);
     }
 
-    setCryptoButtonText('MINT');
-    setTimeout(() => {
-      setShowConnectModal(false);
-    }, 2000);
-
-    if (account) {
-      web3.eth
-        .getBalance(account)
-        .then((balance) => {
-          setWalletBalance(web3.utils.fromWei(balance, 'ether'));
-        })
-        .catch(console.error);
-
-      checkTokensMintedByWallet(contract, account)
-        .then((res) => {
-          if (res) {
-            setTokensMinted(res);
-            console.log('tokens minted', res);
-          }
-        })
-        .catch(console.error);
+    if (active && account) {
+      setMintButtonText('MINT');
+      setTimeout(() => {
+        setShowConnectModal(false);
+      }, 1500);
     }
   }, [active, account]);
 
   return (
     <St.ButtonContainer>
       <St.Button className={sono.className} onClick={handleMintClick}>
-        {cryptoButtonText}
+        {mintButtonText}
       </St.Button>
 
       {showConnectModal && <ConnectModal setShowModal={setShowConnectModal} />}

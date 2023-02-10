@@ -10,7 +10,7 @@ interface Props {
   handleError: (error: string) => void;
   buyButtonText: string;
   maxMint: number;
-  walletBalance: string;
+  walletBalance: string | null;
   tokensMinted: number;
 }
 
@@ -41,7 +41,7 @@ const BuyModal = ({
     if (newQuantity >= minMint && newQuantity <= maxMintFinal) {
       const newTotal = newQuantity * price;
 
-      if (Number(newTotal) > Number(walletBalance)) {
+      if (walletBalance && Number(newTotal) > Number(walletBalance)) {
         return handleError('Insufficient funds');
       }
 
