@@ -18,6 +18,10 @@ const Hero = (): JSX.Element => {
     fetchCurrentSupply(contract).then((response) => setCurrentSupply(response));
   }, []);
 
+  const openSeaLink = 'https://opensea.io/collection/memelord-district';
+  const etherscanLink =
+    'https://etherscan.io/address/0x924F2a4D3e93cC595792292C84A41Ad3AEd70E95';
+
   return (
     <St.Container>
       <St.ImageWrapper>
@@ -26,6 +30,15 @@ const Hero = (): JSX.Element => {
 
       <St.MintSection>
         <St.Title>[ MemeLord District ]</St.Title>
+
+        <St.LinksDiv>
+          <a href={openSeaLink} target="_blank" rel="noreferrer">
+            <St.LinkItem>OpenSea</St.LinkItem>
+          </a>
+          <a href={etherscanLink} target="_blank" rel="noreferrer">
+            <St.LinkItem>Etherscan</St.LinkItem>
+          </a>
+        </St.LinksDiv>
 
         <Web3Buttons />
 

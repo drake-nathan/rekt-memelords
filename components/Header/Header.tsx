@@ -12,7 +12,7 @@ const Header = (): JSX.Element => {
           rel="noreferrer"
         >
           <St.TwitterItem>
-            <St.Text>hmoore</St.Text>
+            <St.Text>hmoore.eth</St.Text>
             <St.TwitterIcon />
           </St.TwitterItem>
         </a>
@@ -25,7 +25,7 @@ const Header = (): JSX.Element => {
           rel="noreferrer"
         >
           <St.TwitterItem>
-            <St.Text>saintkw</St.Text>
+            <St.Text>saintkw.eth</St.Text>
             <St.TwitterIcon />
           </St.TwitterItem>
         </a>

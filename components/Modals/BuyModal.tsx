@@ -1,8 +1,7 @@
 import * as St from './Modals.styled';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMintDetails } from 'hooks/useMintDetails';
 import { sono } from 'styles/fonts';
-import { useWeb3 } from 'hooks/useWeb3';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +11,7 @@ interface Props {
   buyButtonText: string;
   maxMint: number;
   walletBalance: string;
+  tokensMinted: number;
 }
 
 const BuyModal = ({
@@ -22,6 +22,7 @@ const BuyModal = ({
   buyButtonText,
   maxMint,
   walletBalance,
+  tokensMinted,
 }: Props): JSX.Element => {
   const { mintPrice, discountPrice } = useMintDetails();
 
@@ -33,9 +34,11 @@ const BuyModal = ({
   const price = isDiscount ? discountPrice : mintPrice;
 
   const minMint = 1;
+  const maxMintFinal =
+    tokensMinted + maxMint > 10 ? 10 - tokensMinted : maxMint;
 
   const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= minMint && newQuantity <= maxMint) {
+    if (newQuantity >= minMint && newQuantity <= maxMintFinal) {
       const newTotal = newQuantity * price;
 
       if (Number(newTotal) > Number(walletBalance)) {
@@ -66,7 +69,7 @@ const BuyModal = ({
         )}
 
         <St.UnitDiv>
-          <St.UnitText>Max: {maxMint}</St.UnitText>
+          <St.UnitText>Max: {maxMintFinal}</St.UnitText>
           <St.UnitText>Price: {price}(ETH)</St.UnitText>
         </St.UnitDiv>
 
@@ -85,7 +88,7 @@ const BuyModal = ({
           <St.CounterText>{quantity}</St.CounterText>
           <St.PlusMinusButton
             className={sono.className}
-            disabled={quantity === maxMint ? true : false}
+            disabled={quantity === maxMintFinal ? true : false}
             onClick={() => handleQuantityChange(quantity + 1)}
           >
             +

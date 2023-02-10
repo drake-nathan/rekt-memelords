@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Chain } from 'web3/types';
 
 export const useChain = () => {

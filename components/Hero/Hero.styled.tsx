@@ -38,7 +38,7 @@ export const ButtonContainer = styled.div`
 
 export const Title = styled.h3`
   font-weight: 400;
-  margin-bottom: 1em;
+  /* margin-bottom: 1em; */
 
   @media (max-width: 600px) {
     font-size: 1rem;
@@ -110,4 +110,17 @@ export const Button = styled.button`
     width: 300px;
     min-width: 150px;
   } */
+`;
+
+export const LinksDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1em;
+`;
+
+export const LinkItem = styled(Text)`
+  :hover {
+    color: ${(props) => props.theme.colors.textMain};
+    cursor: pointer;
+  }
 `;

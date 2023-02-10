@@ -6,21 +6,23 @@ import {
   checkIfUserHasClaimedDiscount,
   callPublicMint,
   callDiscountMint,
+  checkTokensMintedByWallet,
 } from 'web3/contractInteractions';
 import { MintPhase } from 'web3/types';
 
-// mainnet
-// const urls = {
-//  // openSea: `https://opensea.io/assets/ethereum`,
-//   etherscan: `https://etherscan.io/tx`,
-// };
+const chain = process.env.NEXT_PUBLIC_CHAIN;
 
-//goerli
-const urls = {
+const urlsMainnet = {
+  // openSea: `https://opensea.io/assets/ethereum`,
+  etherscan: `https://etherscan.io/tx`,
+};
+
+const urlsGoerli = {
   // openSea: `https://testnets.opensea.io/assets/goerli`,
   etherscan: `https://goerli.etherscan.io/tx`,
 };
-// FIXME: Switch back to mainnet
+
+const urls = chain === 'goerli' ? urlsGoerli : urlsMainnet;
 
 export interface ISuccessInfo {
   message: string;
@@ -46,6 +48,10 @@ export const discountMint = async (
 
   const isSupplyRemaining = (await fetchCurrentSupply(contract)) < maxSupply;
   if (!isSupplyRemaining) return handleError('MINT HAS SOLD OUT');
+
+  const tokensMintedByUser = await checkTokensMintedByWallet(contract, account);
+  if (tokensMintedByUser >= 10)
+    return handleError('Cannot mint more than 10 tokens per wallet total');
 
   setBuyButtonText('MINTING...');
   const txObj = await callDiscountMint(
@@ -93,6 +99,10 @@ export const publicMint = async (
 
   const isSupplyRemaining = (await fetchCurrentSupply(contract)) < maxSupply;
   if (!isSupplyRemaining) return handleError('Mint has sold out');
+
+  const tokensMintedByUser = await checkTokensMintedByWallet(contract, account);
+  if (tokensMintedByUser >= 10)
+    return handleError('Cannot mint more than 10 tokens per wallet total');
 
   setBuyButtonText('MINTING...');
   const txObj = await callPublicMint(

@@ -7,7 +7,10 @@ import { useContract } from 'hooks/useContract';
 import { useWeb3 } from 'hooks/useWeb3';
 import { publicMint, discountMint, ISuccessInfo } from './web3Helpers';
 import { sono } from 'styles/fonts';
-import { checkIfUserHasClaimedDiscount } from 'web3/contractInteractions';
+import {
+  checkIfUserHasClaimedDiscount,
+  checkTokensMintedByWallet,
+} from 'web3/contractInteractions';
 import ConnectModal from 'components/Modals/ConnectModal';
 import BuyModal from 'components/Modals/BuyModal';
 import ErrorModal from 'components/Modals/ErrorModal';
@@ -51,6 +54,8 @@ const Web3Buttons = (): JSX.Element => {
   const [maxMint, setMaxMint] = useState(maxPublicMint);
   const price = mintPhase === MintPhase.discount ? discountPrice : mintPrice;
 
+  const [tokensMinted, setTokensMinted] = useState(0);
+
   const handleError = (error: string) => {
     setErrorMessage(error);
     setShowErrorModal(true);
@@ -88,6 +93,10 @@ const Web3Buttons = (): JSX.Element => {
 
     if (Number(price) > Number(walletBalance)) {
       return handleError('Insufficient funds');
+    }
+
+    if (tokensMinted >= maxDiscountMint) {
+      return handleError('Cannot mint more than 10 tokens per wallet total');
     }
 
     setBuyButtonText('MINT');
@@ -172,6 +181,15 @@ const Web3Buttons = (): JSX.Element => {
           setWalletBalance(web3.utils.fromWei(balance, 'ether'));
         })
         .catch(console.error);
+
+      checkTokensMintedByWallet(contract, account)
+        .then((res) => {
+          if (res) {
+            setTokensMinted(res);
+            console.log('tokens minted', res);
+          }
+        })
+        .catch(console.error);
     }
   }, [active, account]);
 
@@ -192,6 +210,7 @@ const Web3Buttons = (): JSX.Element => {
           buyButtonText={buyButtonText}
           maxMint={maxMint}
           walletBalance={walletBalance}
+          tokensMinted={tokensMinted}
         />
       )}
 

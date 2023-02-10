@@ -25,6 +25,13 @@ export const checkIfUserHasClaimedDiscount = async (
   return (await contract.methods.claimed(account).call()) as boolean;
 };
 
+export const checkTokensMintedByWallet = async (
+  contract: Contract,
+  account: string,
+): Promise<number> => {
+  return (await contract.methods.mintedPerWallet(account).call()) as number;
+};
+
 export const callDiscountMint = async (
   contract: Contract,
   account: string,
