@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Connectors, connectors } from 'web3/connectors';
 import { sono } from 'styles/fonts';
-import { switchChain } from 'components/Web3/web3Helpers';
+import { switchChain } from 'components/Mint/mintHelpers';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;

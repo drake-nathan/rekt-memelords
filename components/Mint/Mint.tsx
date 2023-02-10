@@ -5,7 +5,7 @@ import { useEagerConnect } from 'hooks/useEagerConnect';
 import { useMintDetails } from 'hooks/useMintDetails';
 import { useContract } from 'hooks/useContract';
 import { useWeb3 } from 'hooks/useWeb3';
-import { publicMint, discountMint, ISuccessInfo } from './web3Helpers';
+import { publicMint, discountMint, ISuccessInfo } from './mintHelpers';
 import { sono } from 'styles/fonts';
 import {
   checkIfUserHasClaimedDiscount,
@@ -18,7 +18,7 @@ import SuccessModal from 'components/Modals/SuccessModal';
 import { getAllowlistStatus, AllowlistStatus } from 'utils/getAllowlistStatus';
 import { MintPhase } from 'web3/types';
 
-const Web3Buttons = (): JSX.Element => {
+const Mint = (): JSX.Element => {
   useEagerConnect();
   const web3 = useWeb3();
   const { active, account } = useWeb3React();
@@ -228,4 +228,4 @@ const Web3Buttons = (): JSX.Element => {
   );
 };
 
-export default Web3Buttons;
+export default Mint;

@@ -1,7 +1,7 @@
 import * as St from './Hero.styled';
 import { useEffect, useState } from 'react';
 import { useMintDetails } from 'hooks/useMintDetails';
-import Web3Buttons from '../Web3/Web3Buttons';
+import Mint from '../Mint/Mint';
 import { useContract } from 'hooks/useContract';
 import { fetchCurrentSupply } from 'web3/contractInteractions';
 import Image from 'next/image';
@@ -40,7 +40,7 @@ const Hero = (): JSX.Element => {
           </a>
         </St.LinksDiv>
 
-        <Web3Buttons />
+        <Mint />
 
         <St.InfoDiv>
           <St.Text>{price}(ETH)</St.Text>

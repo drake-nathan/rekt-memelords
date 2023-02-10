@@ -1,5 +1,5 @@
 import * as St from './Modals.styled';
-import { type ISuccessInfo } from 'components/Web3/web3Helpers';
+import { type ISuccessInfo } from 'components/Mint/mintHelpers';
 import { sono } from 'styles/fonts';
 
 interface Props {
