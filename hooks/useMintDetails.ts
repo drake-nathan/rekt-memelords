@@ -18,7 +18,7 @@ export const useMintDetails = () => {
   const mintPrice = 0.069;
   const discountPrice = 0.042;
   const maxSupply = 420;
-  const maxPublicMint = 5;
+  const maxPublicMint = 3;
   const maxDiscountMint = 10;
 
   const [mintPhase, setMintPhase] = useState<MintPhase>(MintPhase.closed);
