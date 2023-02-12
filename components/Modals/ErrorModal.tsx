@@ -1,5 +1,6 @@
-import { sono } from 'styles/fonts';
 import * as St from './Modals.styled';
+import React from 'react';
+import { sono } from 'styles/fonts';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -7,13 +8,19 @@ interface Props {
 }
 
 const ErrorModal = ({ setShowModal, message }: Props): JSX.Element => {
-  const handleCloseModal = () => {
+  const handleCloseModal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     setShowModal(false);
+    // NOTE: to avoid click throughs, might not be necessary
+    e.stopPropagation();
   };
 
   return (
     <>
-      <St.ModalBackground onClick={handleCloseModal}></St.ModalBackground>
+      <St.ModalBackground
+        onClick={() => setShowModal(false)}
+      ></St.ModalBackground>
       <St.CenterModalContainer>
         <St.MsgDiv>
           <St.UnitText>{message}</St.UnitText>
