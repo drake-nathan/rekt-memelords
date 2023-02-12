@@ -30,6 +30,7 @@ export const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background-color: ${(props) => props.theme.colors.bgMain};
   border: 3px solid ${(props) => props.theme.colors.textMain};
+  border-radius: ${({ theme: { borderRadius } }) => borderRadius};
   padding: 1.75em 1.5em;
   z-index: 40;
   min-width: 300px;
@@ -39,7 +40,6 @@ export const BuyModalContainer = styled(ModalContainer)`
   gap: 2em;
   justify-content: space-evenly;
   min-width: 400px;
-  /* min-height: 425px; */
   z-index: 20;
   padding: 2.5em 2.5em;
   @media (max-width: 500px) {
