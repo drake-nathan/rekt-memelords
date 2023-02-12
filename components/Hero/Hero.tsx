@@ -1,24 +1,17 @@
 import * as St from './Hero.styled';
 import { useEffect, useState } from 'react';
 import { useMintDetails } from 'hooks/useMintDetails';
-import Mint from '../Mint/Mint';
-import { useContract } from 'hooks/useContract';
 import { fetchCurrentSupply } from 'web3/contractInteractions';
 import Image from 'next/image';
 import { MintPhase } from 'web3/types';
 import { useWindowSize } from 'hooks/useWindowSize';
 
 const Hero = (): JSX.Element => {
-  const { contract } = useContract();
   const { maxSupply, mintPrice, discountPrice, mintPhase } = useMintDetails();
   const { windowWidth } = useWindowSize();
 
   const [currentSupply, setCurrentSupply] = useState(maxSupply);
   const price = mintPhase === MintPhase.discount ? discountPrice : mintPrice;
-
-  useEffect(() => {
-    fetchCurrentSupply(contract).then((response) => setCurrentSupply(response));
-  }, []);
 
   const openSeaLink = 'https://opensea.io/collection/memelord-district';
   const etherscanLink =
@@ -58,8 +51,6 @@ const Hero = (): JSX.Element => {
             <St.LinkItem>Etherscan</St.LinkItem>
           </a>
         </St.LinksDiv>
-
-        <Mint />
 
         <St.InfoDiv>
           <St.Text>{price}(ETH)</St.Text>

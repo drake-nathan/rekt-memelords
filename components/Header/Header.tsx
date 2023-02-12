@@ -1,4 +1,5 @@
 import * as St from './Header.styled';
+import { Web3Button } from '@web3modal/react';
 import { useWindowSize } from 'hooks/useWindowSize';
 
 const Header = (): JSX.Element => {
@@ -7,6 +8,8 @@ const Header = (): JSX.Element => {
   return (
     <St.NavContainer>
       <St.Title>rekt memelords</St.Title>
+
+      <Web3Button />
 
       {windowWidth <= 550 && (
         <a

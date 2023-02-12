@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { fetchCurrentSupply, fetchMintPhase } from 'web3/contractInteractions';
-import { useContract } from './useContract';
 import { MintPhase } from 'web3/types';
 
 export const useMintDetails = () => {
-  const { contract } = useContract();
+  // const { contract } = useContract();
+  // FIXME: Fix this
 
   const currentTime = new Date();
   const mintStart = new Date('2023-02-09T13:00:00-0600');
@@ -21,30 +21,30 @@ export const useMintDetails = () => {
   const maxPublicMint = 3;
   const maxDiscountMint = 10;
 
-  const [mintPhase, setMintPhase] = useState<MintPhase>(MintPhase.closed);
-  const [currentSupply, setCurrentSupply] = useState<number>();
+  const [mintPhase, setMintPhase] = useState<MintPhase>(MintPhase.public);
+  const [currentSupply, setCurrentSupply] = useState<number>(100);
 
-  useEffect(() => {
-    fetchMintPhase(contract)
-      .then((mintPhase) => {
-        if (mintPhase) {
-          setMintPhase(mintPhase);
-        }
-      })
-      .catch(console.error);
-  }, []);
+  // useEffect(() => {
+  //   fetchMintPhase(contract)
+  //     .then((mintPhase) => {
+  //       if (mintPhase) {
+  //         setMintPhase(mintPhase);
+  //       }
+  //     })
+  //     .catch(console.error);
+  // }, []);
 
-  useEffect(() => {
-    try {
-      fetchCurrentSupply(contract).then((supply) => {
-        if (supply) {
-          setCurrentSupply(supply);
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [currentSupply]);
+  // useEffect(() => {
+  //   try {
+  //     fetchCurrentSupply(contract).then((supply) => {
+  //       if (supply) {
+  //         setCurrentSupply(supply);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [currentSupply]);
 
   return {
     mintPhase,
