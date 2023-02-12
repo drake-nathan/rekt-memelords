@@ -29,16 +29,10 @@ export const ButtonContainer = styled.div`
   gap: 1em;
   width: 35%;
   max-width: 450px;
-  /* 
-  @media (max-width: 600px) {
-    flex-direction: column;
-    gap: 1.5em;
-  } */
 `;
 
 export const Title = styled.h3`
   font-weight: 400;
-  /* margin-bottom: 1em; */
 
   @media (max-width: 600px) {
     font-size: 1rem;
@@ -46,20 +40,7 @@ export const Title = styled.h3`
   }
 `;
 
-export const ImageWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 550px;
-  aspect-ratio: 1/1;
-
-  @media (max-width: 1100px) {
-    max-width: 450px;
-  }
-
-  @media (max-width: 900px) {
-    max-width: 350px;
-  }
-`;
+export const ImageWrapper = styled.div``;
 
 export const InfoDiv = styled.div`
   display: flex;

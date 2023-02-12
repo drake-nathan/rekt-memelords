@@ -180,7 +180,12 @@ const Mint = (): JSX.Element => {
         {mintButtonText}
       </St.Button>
 
-      {showConnectModal && <ConnectModal setShowModal={setShowConnectModal} />}
+      {showConnectModal && (
+        <ConnectModal
+          setShowModal={setShowConnectModal}
+          handleError={handleError}
+        />
+      )}
 
       {showBuyModal && (
         <BuyModal

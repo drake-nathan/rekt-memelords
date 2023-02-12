@@ -6,10 +6,12 @@ import { useContract } from 'hooks/useContract';
 import { fetchCurrentSupply } from 'web3/contractInteractions';
 import Image from 'next/image';
 import { MintPhase } from 'web3/types';
+import { useWindowSize } from 'hooks/useWindowSize';
 
 const Hero = (): JSX.Element => {
   const { contract } = useContract();
   const { maxSupply, mintPrice, discountPrice, mintPhase } = useMintDetails();
+  const { windowWidth } = useWindowSize();
 
   const [currentSupply, setCurrentSupply] = useState(maxSupply);
   const price = mintPhase === MintPhase.discount ? discountPrice : mintPrice;
@@ -22,10 +24,27 @@ const Hero = (): JSX.Element => {
   const etherscanLink =
     'https://etherscan.io/address/0x924F2a4D3e93cC595792292C84A41Ad3AEd70E95';
 
+  const aspectRatio = 1.0828313253;
+  const [width, setWidth] = useState<number>(550);
+  const height = width / aspectRatio;
+
+  useEffect(() => {
+    if (windowWidth > 1300) setWidth(550);
+    else if (windowWidth <= 1300 && windowWidth > 1100) setWidth(525);
+    else if (windowWidth <= 1100 && windowWidth > 900) setWidth(450);
+    else if (windowWidth <= 400) setWidth(325);
+    else setWidth(350);
+  }, [windowWidth]);
+
   return (
     <St.Container>
       <St.ImageWrapper>
-        <Image src="/MLD.gif" alt="MemeLord District" fill />
+        <Image
+          src="/MLD.gif"
+          alt="MemeLord District"
+          width={width}
+          height={height}
+        />
       </St.ImageWrapper>
 
       <St.MintSection>
@@ -57,6 +76,14 @@ const Hero = (): JSX.Element => {
             <St.Text>Must be on pre-set allowlist</St.Text>
             <St.Text>Public mint begins on Feb 11</St.Text>
             <St.Text>Public mint price: {mintPrice}(ETH)</St.Text>
+          </St.ExplainDiv>
+        )}
+
+        {mintPhase === MintPhase.public && (
+          <St.ExplainDiv>
+            <St.Text>Public mint phase</St.Text>
+            <St.Text>Max 3 mints at a time</St.Text>
+            <St.Text>Max 10 total mints per wallet</St.Text>
           </St.ExplainDiv>
         )}
       </St.MintSection>

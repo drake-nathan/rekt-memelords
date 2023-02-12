@@ -6,9 +6,10 @@ import { sono } from 'styles/fonts';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  handleError: (error: string) => void;
 }
 
-const ConnectModal = ({ setShowModal }: Props): JSX.Element => {
+const ConnectModal = ({ setShowModal, handleError }: Props): JSX.Element => {
   const { activate, active } = useWeb3React();
 
   const [txMsg, setTxMsg] = useState('');
@@ -50,7 +51,12 @@ const ConnectModal = ({ setShowModal }: Props): JSX.Element => {
 
         <St.Button
           className={sono.className}
-          onClick={() => handleConnectWallet(Connectors.Injected)}
+          onClick={() => {
+            if (!window.ethereum) {
+              return handleError('No browser wallet detected');
+            }
+            handleConnectWallet(Connectors.Injected);
+          }}
         >
           METAMASK
         </St.Button>
