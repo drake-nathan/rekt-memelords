@@ -8,7 +8,7 @@ import {
   callDiscountMint,
   checkTokensMintedByWallet,
 } from 'web3/contractInteractions';
-import { MintPhase } from 'web3/types';
+import { Chain, MintPhase } from 'web3/types';
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -132,7 +132,14 @@ export const publicMint = async (
   handleSuccess(successInfo);
 };
 
-export const switchChain = async (chainId: string) => {
+export const switchChain = async (chain: Chain) => {
+  const chainIds: Record<Chain, string> = {
+    [Chain.mainnet]: '0x1',
+    [Chain.goerli]: '0x5',
+  };
+
+  const chainId = chainIds[chain];
+
   await window.ethereum?.request({
     method: 'wallet_switchEthereumChain',
     params: [{ chainId }],

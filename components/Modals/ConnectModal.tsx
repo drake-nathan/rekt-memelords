@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Connectors, connectors } from 'web3/connectors';
 import { sono } from 'styles/fonts';
-import { switchChain } from 'components/Mint/helpers/mintFunctions';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,11 +17,6 @@ const ConnectModal = ({ setShowModal }: Props): JSX.Element => {
     const connector = connectors[connectorToUse];
 
     try {
-      // if (connectorToUse === Connectors.Injected) {
-      //   if (connector.getChainId().valueOf() !== '0x1') {
-      //     await switchChain('0x1');
-      //   }
-      // }
       await activate(connector);
     } catch (err) {
       console.error(err);
@@ -53,8 +47,6 @@ const ConnectModal = ({ setShowModal }: Props): JSX.Element => {
         <St.MsgDiv>
           <St.Text>{txMsg ? txMsg : 'CHOOSE CONNECT METHOD'}</St.Text>
         </St.MsgDiv>
-
-        <St.SubtleText>[ SET WALLET TO ETHEREUM NETWORK ]</St.SubtleText>
 
         <St.Button
           className={sono.className}
