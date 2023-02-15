@@ -6,18 +6,31 @@ export const FallbackContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 80vh;
   padding: 1em;
   gap: 3em;
 `;
 
-export const Title = styled.h1`
-  font-size: 3rem;
-  font-weight: 500;
+export const ParagraphDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 `;
 
 export const Subtle = styled.h3`
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.textOffset};
+
+  a {
+    color: ${({ theme }) => theme.colors.textMain};
+
+    :hover {
+      color: ${({ theme }) => theme.colors.textOffset};
+    }
+  }
+
+  @media (max-width: 500px) {
+    font-size: 1.125rem;
+  }
 `;
 
 export const Text = styled.h4`

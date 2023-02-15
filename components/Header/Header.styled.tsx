@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { FiTwitter } from 'react-icons/fi';
 
 export const NavContainer = styled.div`
   width: 100%;
@@ -7,10 +6,10 @@ export const NavContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1em;
+  padding: 1em 1.25em;
   gap: 0.75em;
 
-  @media (max-width: 860px) {
+  @media (max-width: 500px) {
     flex-direction: column;
   }
 `;
@@ -18,31 +17,4 @@ export const NavContainer = styled.div`
 export const Title = styled.h1`
   font-weight: 500;
   letter-spacing: 1.25px;
-`;
-
-export const TwitterDiv = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75em;
-  /* 
-  @media (max-width: 550px) {
-    flex-direction: column;
-  } */
-`;
-
-export const TwitterItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-
-  :hover {
-    cursor: pointer;
-    color: ${({ theme }) => theme.colors.textOffset};
-  }
-`;
-
-export const Text = styled.span``;
-
-export const TwitterIcon = styled(FiTwitter)`
-  font-size: 1.125rem;
 `;
