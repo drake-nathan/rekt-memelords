@@ -27,6 +27,10 @@ export const Subtle = styled.h3`
       color: ${({ theme }) => theme.colors.textOffset};
     }
   }
+
+  @media (max-width: 500px) {
+    font-size: 1.125rem;
+  }
 `;
 
 export const Text = styled.h4`

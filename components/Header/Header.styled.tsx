@@ -9,7 +9,7 @@ export const NavContainer = styled.div`
   padding: 1em 1.25em;
   gap: 0.75em;
 
-  @media (max-width: 860px) {
+  @media (max-width: 500px) {
     flex-direction: column;
   }
 `;
