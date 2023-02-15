@@ -5,7 +5,7 @@ export const theme: DefaultTheme = {
 
   colors: {
     bgMain: '#08080b',
-    bgOffset: '#2d2e13',
+    bgOffset: '#2e2e2e',
     textMain: '#e6ec20',
     textOffset: '#818181',
   },

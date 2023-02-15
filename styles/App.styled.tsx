@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const AppContainer = styled.div`
   min-height: 100vh;
   width: 100%;
-  padding: 0 0.5em;
 
   display: flex;
   flex-direction: column;
@@ -22,4 +21,5 @@ export const BodyContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+  padding: 0 0.5em;
 `;
