@@ -31,7 +31,21 @@ const Footer = (): JSX.Element => {
         </a>
       </St.TwitterDiv>
 
-      <St.Dicks>dicks, heheh</St.Dicks>
+      <St.BottomRow>
+        <St.TwitterDiv>
+          <a
+            href="https://twitter.com/nathandrake"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <St.TwitterItem className="dev">
+              <St.Text>Dev: TheNathanDrake.eth</St.Text>
+            </St.TwitterItem>
+          </a>
+        </St.TwitterDiv>
+
+        <St.Dicks>dicks, heheh</St.Dicks>
+      </St.BottomRow>
     </St.Container>
   );
 };

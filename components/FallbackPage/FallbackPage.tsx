@@ -9,15 +9,36 @@ const FallbackPage = (): JSX.Element => {
   return (
     <>
       <St.FallbackContainer>
-        <St.Title>rekt memelords</St.Title>
         {mintStart > now ? (
           <>
             <St.Subtle>The MemeLord District mint begins soon...</St.Subtle>
           </>
         ) : (
-          <St.Subtle>
-            The mint you are trying access is no longer active.
-          </St.Subtle>
+          <St.ParagraphDiv>
+            <St.Subtle>The MemeLord&apos;s genesis mint is closed.</St.Subtle>
+            <St.Subtle>
+              You can buy on secondary on{' '}
+              <a
+                href="https://opensea.io/collection/memelord-district"
+                target="_blank"
+                rel="noreferrer"
+              >
+                OpenSea
+              </a>
+              .
+            </St.Subtle>
+            <St.Subtle>
+              Join the{' '}
+              <a
+                href="https://discord.gg/cXy6RHvM8V"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Discord
+              </a>{' '}
+              for announcments on future drops.
+            </St.Subtle>
+          </St.ParagraphDiv>
         )}
         <a
           href="https://pbs.twimg.com/media/FodT_tnXEBIVC0v?format=jpg&name=large"
