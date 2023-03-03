@@ -1,10 +1,10 @@
 import * as St from './Hero.styled';
 import { useEffect, useState } from 'react';
 import { useMintDetails } from 'hooks/useMintDetails';
-import { fetchCurrentSupply } from 'web3/contractInteractions';
 import Image from 'next/image';
 import { MintPhase } from 'web3/types';
 import { useWindowSize } from 'hooks/useWindowSize';
+import { Web3Button } from '@web3modal/react';
 
 const Hero = (): JSX.Element => {
   const { maxSupply, mintPrice, discountPrice, mintPhase } = useMintDetails();
@@ -41,6 +41,8 @@ const Hero = (): JSX.Element => {
       </St.ImageWrapper>
 
       <St.MintSection>
+        <Web3Button />
+
         <St.Title>[ MemeLord District ]</St.Title>
 
         <St.LinksDiv>
