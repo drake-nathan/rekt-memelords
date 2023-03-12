@@ -1,4 +1,5 @@
 import * as St from './Footer.styled';
+import SocialIcons from './SocialIcons/SocialIcons';
 
 const Footer = (): JSX.Element => {
   return (
@@ -26,6 +27,8 @@ const Footer = (): JSX.Element => {
           </St.TwitterItem>
         </a>
       </St.TwitterDiv>
+
+      <SocialIcons />
 
       <St.BottomRow>
         <St.TwitterDiv>

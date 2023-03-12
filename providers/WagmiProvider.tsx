@@ -6,8 +6,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Web3Provider: React.FC<Props> = ({ children }) => {
+const WagmiProvider = ({ children }: Props): JSX.Element => {
   return <WagmiConfig client={wagmiClient}>{children}</WagmiConfig>;
 };
 
-export default Web3Provider;
+export default WagmiProvider;

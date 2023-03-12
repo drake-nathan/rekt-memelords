@@ -1,12 +1,13 @@
 import * as St from './Header.styled';
-import SocialIcons from './SocialIcons/SocialIcons';
+import SocialIcons from '../Footer/SocialIcons/SocialIcons';
+import { Web3Button } from '@web3modal/react';
 
 const Header = (): JSX.Element => {
   return (
     <St.NavContainer>
       <St.Title>rekt memelords</St.Title>
 
-      <SocialIcons />
+      <Web3Button />
     </St.NavContainer>
   );
 };
