@@ -6,13 +6,9 @@ const Footer = (): JSX.Element => {
       <St.Text>Your MemeLords are:</St.Text>
 
       <St.TwitterDiv>
-        <a
-          href="https://twitter.com/hmoore_eth"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://twitter.com/rhm_eth" target="_blank" rel="noreferrer">
           <St.TwitterItem>
-            <St.Text>hmoore.eth</St.Text>
+            <St.Text>rhm.eth</St.Text>
             <St.TwitterIcon />
           </St.TwitterItem>
         </a>
