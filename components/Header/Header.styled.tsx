@@ -10,7 +10,8 @@ export const NavContainer = styled.div`
   gap: 0.75em;
 
   @media (max-width: 500px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
+    gap: 1.5em;
   }
 `;
 

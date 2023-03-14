@@ -1,12 +1,7 @@
-import { useState, useEffect } from 'react';
-import { fetchCurrentSupply, fetchMintPhase } from 'web3/contractInteractions';
-import { MintPhase } from 'web3/types';
+import { useState } from 'react';
+import { useStoreFrontIsMintOpen } from 'web3/generated';
 
 export const useMintDetails = () => {
-  // const { contract } = useContract();
-  // FIXME: Fix this
-
-  const currentTime = new Date();
   const mintStart = new Date('2023-02-09T13:00:00-0600');
   const discountMintPeriod = 1; // days
   // Public start 11/18
@@ -21,33 +16,12 @@ export const useMintDetails = () => {
   const maxPublicMint = 3;
   const maxDiscountMint = 10;
 
-  const [mintPhase, setMintPhase] = useState<MintPhase>(MintPhase.public);
   const [currentSupply, setCurrentSupply] = useState<number>(100);
 
-  // useEffect(() => {
-  //   fetchMintPhase(contract)
-  //     .then((mintPhase) => {
-  //       if (mintPhase) {
-  //         setMintPhase(mintPhase);
-  //       }
-  //     })
-  //     .catch(console.error);
-  // }, []);
-
-  // useEffect(() => {
-  //   try {
-  //     fetchCurrentSupply(contract).then((supply) => {
-  //       if (supply) {
-  //         setCurrentSupply(supply);
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [currentSupply]);
+  const { data: isMintOpen } = useStoreFrontIsMintOpen();
 
   return {
-    mintPhase,
+    isMintOpen,
     mintStart,
     mintEnd,
     mintPrice,
