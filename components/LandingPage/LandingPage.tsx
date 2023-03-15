@@ -5,6 +5,7 @@ const LandingPage = (): JSX.Element => {
   return (
     <St.Container>
       <St.Text>This is the landing page.</St.Text>
+
       <St.Text>
         Oh, you want to{' '}
         <Link href="/mint" className="hvr-underline-from-left">
@@ -12,6 +13,7 @@ const LandingPage = (): JSX.Element => {
         </Link>
         ?
       </St.Text>
+
       <St.Text>
         <Link href="/about" className="hvr-underline-from-left">
           Wtf are MemeLords

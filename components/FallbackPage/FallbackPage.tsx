@@ -1,21 +1,21 @@
+import { useStoreFrontMintStart } from 'web3/generated';
 import * as St from './Fallback.Syled';
-import { useMintDetails } from 'hooks/useMintDetails';
 
 const FallbackPage = (): JSX.Element => {
-  const { mintStart } = useMintDetails();
-
-  const now = new Date();
+  const { data: mintStartBigNum } = useStoreFrontMintStart();
+  const mintStart = mintStartBigNum?.toNumber() || 0;
+  const now = new Date().getTime() / 1000;
 
   return (
     <>
       <St.FallbackContainer>
         {mintStart > now ? (
           <>
-            <St.Subtle>The MemeLord District mint begins soon...</St.Subtle>
+            <St.Subtle>The MemeLord mint begins soon...</St.Subtle>
           </>
         ) : (
           <St.ParagraphDiv>
-            <St.Subtle>The MemeLord&apos;s genesis mint is closed.</St.Subtle>
+            <St.Subtle>The MemeLord&apos;s mint is closed.</St.Subtle>
             <St.Subtle>
               You can buy on secondary on{' '}
               <a

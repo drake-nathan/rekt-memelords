@@ -6,6 +6,8 @@ import Hero from 'components/Hero/Hero';
 import FallbackPage from 'components/FallbackPage/FallbackPage';
 import { BarLoader } from 'react-spinners';
 import { useTheme } from 'styled-components';
+import { useWeb3Modal } from '@web3modal/react';
+import { useAccount } from 'wagmi';
 
 enum Content {
   Loading,
@@ -16,9 +18,16 @@ enum Content {
 
 const Home: NextPage = () => {
   const { colors } = useTheme();
+  const { open } = useWeb3Modal();
+  const { isConnected } = useAccount();
+
   const { data: isMintOpen, isLoading, error } = useStoreFrontIsMintOpen();
 
   const [content, setContent] = useState<Content>(Content.Loading);
+
+  useEffect(() => {
+    if (!isConnected) open();
+  }, [isConnected]);
 
   useEffect(() => {
     if (!isLoading) {

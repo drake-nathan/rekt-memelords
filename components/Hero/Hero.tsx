@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useWindowSize } from 'hooks/useWindowSize';
 import { useStoreFrontMintPrice } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
+import Mint from 'components/Mint/Mint';
 
 const Hero = (): JSX.Element => {
   const { windowWidth } = useWindowSize();
@@ -19,7 +20,7 @@ const Hero = (): JSX.Element => {
   const height = width / aspectRatio;
 
   useEffect(() => {
-    if (windowWidth > 1300) setWidth(700);
+    if (windowWidth > 1300) setWidth(650);
     else if (windowWidth <= 1300 && windowWidth > 1100) setWidth(525);
     else if (windowWidth <= 1100 && windowWidth > 900) setWidth(450);
     else if (windowWidth <= 400) setWidth(325);
@@ -29,18 +30,54 @@ const Hero = (): JSX.Element => {
   return (
     <St.Container>
       <St.ImageWrapper>
-        <Image
-          priority
-          src="/memes/PML.gif"
-          alt="Professional MemeLord"
-          width={width}
-          height={height}
-        />
+        <a
+          href="https://memelordsresources9838.blob.core.windows.net/memes/PML.gif"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Image
+            priority
+            src="/memes/PML.gif"
+            alt="Professional MemeLord"
+            width={width}
+            height={height}
+          />
+        </a>
       </St.ImageWrapper>
 
       <St.MintSection>
         <St.Title>[ Professional MemeLord ]</St.Title>
 
+        <St.ExplainDiv>
+          <St.Text>1 MLD = 1 PML</St.Text>
+          <St.Text>
+            Mint 1 PML per MLD for {mintPrice ? formatEther(mintPrice) : 0.042}
+            (ETH)
+          </St.Text>
+          <St.Text>OR burn 1 MLD for 1 PML</St.Text>
+          <St.Text>
+            OR send DPs to{' '}
+            <a
+              href="https://twitter.com/crookedwest"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OG daddy
+            </a>{' '}
+            (nfa)
+          </St.Text>
+        </St.ExplainDiv>
+
+        <Mint />
+
+        {/* 
+        <St.InfoDiv>
+          <St.Text>
+            {currentSupply < maxSupply ? maxSupply - currentSupply : maxSupply}{' '}
+            {currentSupply < maxSupply ? 'NFTS REMAINING' : 'NFTS TOTAL'}
+          </St.Text>
+        </St.InfoDiv> */}
+        {/* 
         <St.LinksDiv>
           <a href={openSeaLink} target="_blank" rel="noreferrer">
             <St.LinkItem>OpenSea</St.LinkItem>
@@ -48,21 +85,7 @@ const Hero = (): JSX.Element => {
           <a href={etherscanLink} target="_blank" rel="noreferrer">
             <St.LinkItem>Etherscan</St.LinkItem>
           </a>
-        </St.LinksDiv>
-
-        <St.InfoDiv>
-          <St.Text>{mintPrice ? formatEther(mintPrice) : 0.042}(ETH)</St.Text>
-
-          {/* <St.Text>
-            {currentSupply < maxSupply ? maxSupply - currentSupply : maxSupply}{' '}
-            {currentSupply < maxSupply ? 'NFTS REMAINING' : 'NFTS TOTAL'}
-          </St.Text> */}
-        </St.InfoDiv>
-
-        <St.ExplainDiv>
-          <St.Text>1 MemeLord District = 1 Professional MemeLord</St.Text>
-          <St.Text>Mint 1 PML per MLD, or burn 1 MLD for 1 PML</St.Text>
-        </St.ExplainDiv>
+        </St.LinksDiv> */}
       </St.MintSection>
     </St.Container>
   );
