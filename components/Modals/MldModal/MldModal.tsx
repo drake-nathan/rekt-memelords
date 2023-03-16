@@ -1,83 +1,89 @@
 import * as St from './MldModal.styled';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ITokenOwner } from 'services/azure';
-import Image from 'next/image';
+import { sono } from 'styles/fonts';
+import Checkbox from 'rc-checkbox';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleError: (error: string) => void;
-  buyButtonText: string;
   userMldTokens: ITokenOwner[];
+  setMintOrBurn: React.Dispatch<React.SetStateAction<'mint' | 'burn'>>;
+  setShowBuyModal: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedTokens: number[];
+  setSelectedTokens: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const PremintModal: React.FC<Props> = ({
   setShowModal,
   handleError,
-  buyButtonText,
   userMldTokens,
+  setMintOrBurn,
+  setShowBuyModal,
+  selectedTokens,
+  setSelectedTokens,
 }) => {
-  const [activeMld, setActiveMld] = useState<number | null>(null);
+  useEffect(() => {
+    setSelectedTokens(userMldTokens.map((token) => token.tokenId));
+  }, [userMldTokens]);
 
-  const [isFocusImgError, setIsFocusImgError] = useState<boolean>(false);
+  const handleCheckboxClick = (tokenId: number) => {
+    if (selectedTokens.includes(tokenId)) {
+      setSelectedTokens(selectedTokens.filter((id) => id !== tokenId));
+    } else {
+      setSelectedTokens([...selectedTokens, tokenId]);
+    }
+  };
 
-  const root = 'https://mattoapi.blob.core.windows.net/thumbnails';
-  const enso = { id: 34, slug: 'enso' };
-  const focus = { id: 181, slug: 'focus' };
-
-  // useEffect(() => {
-  //   if (!userMldTokens) {
-  //     setShowModal(false);
-  //   }
-  // }, [userMldTokens]);
-
-  const handleMintClick = () => {
-    // const project = activeMld ? enso.id : focus.id;
-    // const token = activeMld ? activeMld : activeFocus;
-    // if (project && token) {
-    //   handlePresaleMint(project, token);
-    // } else {
-    //   handleError('PLEASE SELECT A TOKEN TO MINT WITH');
-    // }
+  const handleMintClick = (mintOrBurn: 'mint' | 'burn') => {
+    if (selectedTokens.length === 0) {
+      handleError('Please select at least one MLD');
+    } else {
+      setMintOrBurn(mintOrBurn);
+      setShowBuyModal(true);
+    }
   };
 
   return (
     <>
-      <St.BuyModalBackground onClick={() => setShowModal(false)} />
-      <St.BuyModalContainer>
-        <St.UnitDiv>
-          <St.UnitText>
-            {userMldTokens.length && 'Select MLD to claim with'}
-          </St.UnitText>
-        </St.UnitDiv>
-        <St.ListingsWrapper>
-          {userMldTokens.map((token) => (
-            <St.TokenListing
-              key={`MLD ${token.tokenId}`}
-              onClick={() => {
-                setActiveMld(token.tokenId);
-              }}
-            >
-              <Image
-                src={`/memes/MLD.gif`}
-                height={150}
-                width={150}
-                alt="mld"
-              />{' '}
-              <St.TokenInfo>
-                <St.TokenText>
-                  {activeMld === token.tokenId ? 'TOKEN SELECTED' : ''}
-                </St.TokenText>
-                {/* <St.TokenText>ENSO #{token}</St.TokenText> */}
-              </St.TokenInfo>
-            </St.TokenListing>
-          ))}
-        </St.ListingsWrapper>
+      <St.Background onClick={() => setShowModal(false)} />
+      <St.Container>
+        <St.Text>Select MLD to claim with</St.Text>
 
-        <St.Button onClick={handleMintClick}>
-          {buyButtonText}
-          {activeMld && `#${activeMld}`}
-        </St.Button>
-      </St.BuyModalContainer>
+        {userMldTokens && (
+          <St.MldGrid>
+            {userMldTokens.map((token) => {
+              const { tokenId } = token;
+              const isChecked = selectedTokens.includes(tokenId);
+
+              return (
+                <St.Mld key={`MLD ${tokenId}`}>
+                  <Checkbox
+                    checked={isChecked}
+                    onClick={() => handleCheckboxClick(tokenId)}
+                  />
+                  <St.Text>{`#${tokenId}`}</St.Text>
+                </St.Mld>
+              );
+            })}
+          </St.MldGrid>
+        )}
+
+        <St.ButtonDiv>
+          <St.Button
+            className={sono.className}
+            onClick={() => handleMintClick('mint')}
+          >
+            mint
+          </St.Button>
+          <St.Button
+            className={sono.className}
+            onClick={() => handleMintClick('burn')}
+          >
+            burn
+          </St.Button>
+        </St.ButtonDiv>
+      </St.Container>
     </>
   );
 };

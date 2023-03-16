@@ -14,7 +14,7 @@ export default defineConfig(() => {
       {
         name: 'Token',
         abi: TokenAbi as any,
-        address: '0x6c5f093c84bf139adAc4f126D88A57478285972a',
+        address: '0x5FfDA088d6fB725e359c91100dbb68a134256Bc0',
       },
     ],
     plugins: [
@@ -34,7 +34,7 @@ export default defineConfig(() => {
             name: 'StoreFront',
             address: {
               1: '0x5c0a5c9e5e0c0c9e5e0c0c9e5e0c0c9e5e0c0c9e',
-              5: '0x3E095dF4C3EEa452cf1cE373eA56fF0202a0A54f',
+              5: '0x77D0b5F67A5328E3dAc6D6A06b65Eb8Ba17d20e9',
             },
           },
         ],

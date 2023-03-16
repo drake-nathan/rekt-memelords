@@ -12,11 +12,10 @@ export const fetchUserMldTokens = async (
   address: string,
 ): Promise<ITokenOwner[]> => {
   const url = `https://api.rektmemelords.lol/mld-owners${
-    chainId === 69 ? '-goerli' : ''
+    chainId === 5 ? '-goerli' : ''
   }?address=${address}`;
 
   const response = await axios.get<ITokenOwner[]>(url);
-  console.log('response', response);
 
   return response.data;
 };

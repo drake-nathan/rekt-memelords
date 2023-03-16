@@ -26,9 +26,4 @@ export const Button = styled.button`
     color: ${(props) => props.theme.colors.bgMain};
     font-weight: 700;
   }
-
-  /* @media (max-width: 600px) {
-    width: 300px;
-    min-width: 150px;
-  } */
 `;

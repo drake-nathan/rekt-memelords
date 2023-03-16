@@ -1,53 +1,59 @@
 import * as St from './Modals.styled';
-import { useState } from 'react';
-import { useMintDetails } from 'hooks/useMintDetails';
 import { sono } from 'styles/fonts';
+import { useBalance } from 'wagmi';
+import {
+  usePrepareStoreFrontClaim,
+  useStoreFrontClaim,
+  usePrepareMldSetApprovalForAll,
+  storeFrontAddress,
+  useMldSetApprovalForAll,
+} from 'web3/generated';
+import { zeroAddress } from 'utils/constants';
+import { BigNumber } from 'ethers';
+import { parseEther } from 'ethers/lib/utils.js';
+import { useApproveBurn } from 'hooks/useApproveBurn';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  isDiscount: boolean;
-  handleCryptoMint: (quantity: number) => void;
   handleError: (error: string) => void;
-  buyButtonText: string;
-  maxMint: number;
-  walletBalance: string | null;
-  tokensMinted: number;
+  mintOrBurn: 'mint' | 'burn';
+  selectedTokens: number[];
+  mintPrice: number;
+  address: `0x${string}`;
 }
 
 const BuyModal = ({
   setShowModal,
-  isDiscount,
-  handleCryptoMint,
   handleError,
-  buyButtonText,
-  maxMint,
-  walletBalance,
-  tokensMinted,
+  mintOrBurn,
+  selectedTokens,
+  mintPrice,
+  address,
 }: Props): JSX.Element => {
-  const { mintPrice, discountPrice } = useMintDetails();
+  const balance = useBalance();
+  const { approveBurn, burnError, burnSuccess } =
+    useApproveBurn(selectedTokens);
 
-  const [quantity, setQuantity] = useState(1);
-  const [total, setTotal] = useState(
-    isDiscount ? discountPrice.toFixed(3) : mintPrice.toFixed(3),
-  );
+  const vault = zeroAddress;
 
-  const price = isDiscount ? discountPrice : mintPrice;
+  const quantity = selectedTokens.length;
+  const total = (quantity * mintPrice).toFixed(3);
 
-  const minMint = 1;
-  const maxMintFinal =
-    tokensMinted + maxMint > 10 ? 10 - tokensMinted : maxMint;
+  // convert selectedTokens to bigNumber
+  const claimTokens = selectedTokens.map((tokenId) => BigNumber.from(tokenId));
 
-  const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= minMint && newQuantity <= maxMintFinal) {
-      const newTotal = newQuantity * price;
+  // const { config } = usePrepareStoreFrontClaim({
+  //   args: [address, claimTokens, vault],
+  //   overrides: {
+  //     from: address,
+  //     value: parseEther(total),
+  //   },
+  // });
+  // console.log(config);
+  // const { write } = useStoreFrontClaim(config);
 
-      if (walletBalance && Number(newTotal) > Number(walletBalance)) {
-        return handleError('Insufficient funds');
-      }
-
-      setQuantity(newQuantity);
-      setTotal((newQuantity * price).toFixed(3));
-    }
+  const handleBurnClick = async () => {
+    approveBurn?.();
   };
 
   return (
@@ -55,51 +61,48 @@ const BuyModal = ({
       <St.BuyModalBackground onClick={() => setShowModal(false)} />
 
       <St.BuyModalContainer>
-        <St.MsgDiv>
-          <St.Text>Choose Quantity</St.Text>
-        </St.MsgDiv>
+        {mintOrBurn === 'mint' ? (
+          <>
+            <St.UnitDiv>
+              <St.UnitText>Quantity: {quantity}</St.UnitText>
+            </St.UnitDiv>
 
-        {isDiscount && (
-          <St.UnitDiv>
-            <St.SubtleText>
-              Any unclaimed discount tokens will be reallocated to the public
-              mint phase.
-            </St.SubtleText>
-          </St.UnitDiv>
+            <St.UnitDiv>
+              <St.UnitText>Price: {mintPrice}(ETH)</St.UnitText>
+            </St.UnitDiv>
+
+            <St.UnitDiv>
+              <St.UnitText>Total: {total}(ETH)</St.UnitText>
+            </St.UnitDiv>
+          </>
+        ) : (
+          <>
+            <St.UnitDiv>
+              <St.UnitText>
+                Are you sure you want to burn {quantity} MLD tokens for{' '}
+                {quantity} PML tokens?
+              </St.UnitText>
+            </St.UnitDiv>
+
+            <St.UnitDiv>
+              <St.UnitText>This is not reversible.</St.UnitText>
+            </St.UnitDiv>
+
+            <St.UnitDiv>
+              <St.UnitText>
+                First, you will be asked to approve MLD tokens for burning.
+              </St.UnitText>
+            </St.UnitDiv>
+          </>
         )}
-
-        <St.UnitDiv>
-          <St.UnitText>Max: {maxMintFinal}</St.UnitText>
-          <St.UnitText>Price: {price}(ETH)</St.UnitText>
-        </St.UnitDiv>
-
-        <St.UnitDiv>
-          <St.UnitText>Total: {total}(ETH)</St.UnitText>
-        </St.UnitDiv>
-
-        <St.PlusMinusDiv>
-          <St.PlusMinusButton
-            className={sono.className}
-            disabled={quantity === minMint ? true : false}
-            onClick={() => handleQuantityChange(quantity - 1)}
-          >
-            -
-          </St.PlusMinusButton>
-          <St.CounterText>{quantity}</St.CounterText>
-          <St.PlusMinusButton
-            className={sono.className}
-            disabled={quantity === maxMintFinal ? true : false}
-            onClick={() => handleQuantityChange(quantity + 1)}
-          >
-            +
-          </St.PlusMinusButton>
-        </St.PlusMinusDiv>
 
         <St.Button
           className={sono.className}
-          onClick={() => handleCryptoMint(quantity)}
+          onClick={
+            mintOrBurn === 'burn' ? handleBurnClick : () => console.log('butts')
+          }
         >
-          {buyButtonText}
+          {mintOrBurn === 'mint' ? 'mint' : 'burn them fuckers'}
         </St.Button>
       </St.BuyModalContainer>
     </>

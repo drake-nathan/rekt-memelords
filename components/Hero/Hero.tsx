@@ -49,7 +49,7 @@ const Hero = (): JSX.Element => {
         <St.Title>[ Professional MemeLord ]</St.Title>
 
         <St.ExplainDiv>
-          <St.Text>1 MLD = 1 PML</St.Text>
+          <St.Text>1 MemeLord District = 1 PML</St.Text>
           <St.Text>
             Mint 1 PML per MLD for {mintPrice ? formatEther(mintPrice) : 0.042}
             (ETH)
