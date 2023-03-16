@@ -1,10 +1,10 @@
 import * as St from './Modals.styled';
-import { type ISuccessInfo } from 'components/Mint/helpers/mintFunctions';
+// import { type ISuccessInfo } from 'components/Mint/helpers/mintFunctions';
 import { sono } from 'styles/fonts';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  successInfo: ISuccessInfo;
+  successInfo: any;
 }
 
 const ErrorModal = ({ setShowModal, successInfo }: Props): JSX.Element => {
