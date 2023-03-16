@@ -7,7 +7,6 @@
     "dev": "next dev",
     "devstart": "next dev",
     "type": "tsc --noEmit",
-    "prebuild": "yarn wagmi generate",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
