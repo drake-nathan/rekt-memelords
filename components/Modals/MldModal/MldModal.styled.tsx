@@ -24,14 +24,13 @@ export const Container = styled.div`
   background: rgba(58, 58, 58, 0.7);
   border: 3px solid ${(props) => props.theme.colors.textMain};
   min-width: 300px;
-
   gap: 2.5em;
-  min-width: 300px;
   z-index: 20;
   padding: 2em 1.5em;
+  border-radius: ${(props) => props.theme.borderRadius};
 
   @media (max-width: 500px) {
-    width: 100%;
+    max-width: 90%;
   }
 `;
 
@@ -43,8 +42,9 @@ export const MldGrid = styled.div`
   align-items: center;
   max-width: 300px;
   padding: 1.5em 0.5em;
-  gap: 1em;
+  gap: 0.5em;
   border: 2px solid ${(props) => props.theme.colors.textMain};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   overflow-y: scroll;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -59,6 +59,13 @@ export const Mld = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5em;
+  padding: 0.25em 0.5em;
+
+  :hover {
+    cursor: pointer;
+    outline: 1px solid ${(props) => props.theme.colors.textOffset};
+    border-radius: ${(props) => props.theme.borderRadius};
+  }
 `;
 
 export const Text = styled.span`
@@ -99,5 +106,9 @@ export const Button = styled.button`
     background-color: ${(props) => props.theme.colors.textMain};
     color: ${(props) => props.theme.colors.bgMain};
     font-weight: 700;
+  }
+
+  @media (max-width: 500px) {
+    min-width: 125px;
   }
 `;

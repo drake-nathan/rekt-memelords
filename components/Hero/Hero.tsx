@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useWindowSize } from 'hooks/useWindowSize';
 import { useStoreFrontMintPrice } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
-import Mint from 'components/Mint/Mint';
+import Mint from 'components/Claim/Claim';
 
 const Hero = (): JSX.Element => {
   const { windowWidth } = useWindowSize();
@@ -37,7 +37,7 @@ const Hero = (): JSX.Element => {
         >
           <Image
             priority
-            src="/memes/PML.gif"
+            src="/memes/PML-small.gif"
             alt="Professional MemeLord"
             width={width}
             height={height}

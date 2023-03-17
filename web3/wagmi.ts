@@ -34,11 +34,11 @@ export const wagmiClient = createClient({
   autoConnect: true,
   connectors: w3mConnectors({
     projectId,
-    version: 2,
+    version: 1,
     chains,
   }),
   provider,
   webSocketProvider,
 });
 
-export const ethereumClient = new EthereumClient(wagmiClient, [chain]);
+export const ethereumClient = new EthereumClient(wagmiClient, chains);

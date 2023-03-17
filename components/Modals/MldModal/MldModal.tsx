@@ -1,46 +1,50 @@
 import * as St from './MldModal.styled';
-import { useEffect, useState } from 'react';
-import { ITokenOwner } from 'services/azure';
+import { useEffect } from 'react';
 import { sono } from 'styles/fonts';
 import Checkbox from 'rc-checkbox';
+import { claimed } from 'web3/ethers';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleError: (error: string) => void;
-  userMldTokens: ITokenOwner[];
-  setMintOrBurn: React.Dispatch<React.SetStateAction<'mint' | 'burn'>>;
-  setShowBuyModal: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedTokens: number[];
-  setSelectedTokens: React.Dispatch<React.SetStateAction<number[]>>;
+  userMldTokens: number[];
+  setShowBurnModal: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedToken: number;
+  setSelectedToken: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const PremintModal: React.FC<Props> = ({
   setShowModal,
   handleError,
   userMldTokens,
-  setMintOrBurn,
-  setShowBuyModal,
-  selectedTokens,
-  setSelectedTokens,
+  setShowBurnModal,
+  selectedToken,
+  setSelectedToken,
 }) => {
   useEffect(() => {
-    setSelectedTokens(userMldTokens.map((token) => token.tokenId));
+    setSelectedToken(userMldTokens[0]);
   }, [userMldTokens]);
 
   const handleCheckboxClick = (tokenId: number) => {
-    if (selectedTokens.includes(tokenId)) {
-      setSelectedTokens(selectedTokens.filter((id) => id !== tokenId));
-    } else {
-      setSelectedTokens([...selectedTokens, tokenId]);
-    }
+    setSelectedToken(tokenId);
+    // if (selectedToken.includes(tokenId)) {
+    //   setselectedToken(selectedToken.filter((id) => id !== tokenId));
+    // } else {
+    //   setselectedToken([...selectedToken, tokenId]);
+    // }
   };
 
-  const handleMintClick = (mintOrBurn: 'mint' | 'burn') => {
-    if (selectedTokens.length === 0) {
+  const handleBurnClick = async () => {
+    const isClaimed = await claimed(selectedToken);
+
+    if (isClaimed) {
+      setShowBurnModal(false);
+      handleError('MLD already claimed');
+    } else if (!selectedToken) {
+      setShowBurnModal(false);
       handleError('Please select at least one MLD');
     } else {
-      setMintOrBurn(mintOrBurn);
-      setShowBuyModal(true);
+      setShowBurnModal(true);
     }
   };
 
@@ -52,16 +56,15 @@ const PremintModal: React.FC<Props> = ({
 
         {userMldTokens && (
           <St.MldGrid>
-            {userMldTokens.map((token) => {
-              const { tokenId } = token;
-              const isChecked = selectedTokens.includes(tokenId);
+            {userMldTokens.map((tokenId) => {
+              const isChecked = selectedToken === tokenId;
 
               return (
-                <St.Mld key={`MLD ${tokenId}`}>
-                  <Checkbox
-                    checked={isChecked}
-                    onClick={() => handleCheckboxClick(tokenId)}
-                  />
+                <St.Mld
+                  key={`MLD ${tokenId}`}
+                  onClick={() => handleCheckboxClick(tokenId)}
+                >
+                  <Checkbox checked={isChecked} />
                   <St.Text>{`#${tokenId}`}</St.Text>
                 </St.Mld>
               );
@@ -70,16 +73,8 @@ const PremintModal: React.FC<Props> = ({
         )}
 
         <St.ButtonDiv>
-          <St.Button
-            className={sono.className}
-            onClick={() => handleMintClick('mint')}
-          >
-            mint
-          </St.Button>
-          <St.Button
-            className={sono.className}
-            onClick={() => handleMintClick('burn')}
-          >
+          <St.Button className={sono.className}>mint</St.Button>
+          <St.Button className={sono.className} onClick={handleBurnClick}>
             burn
           </St.Button>
         </St.ButtonDiv>

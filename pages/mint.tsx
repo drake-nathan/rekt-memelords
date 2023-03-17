@@ -45,7 +45,17 @@ const Home: NextPage = () => {
 
   const render: Record<Content, JSX.Element> = {
     [Content.Loading]: (
-      <BarLoader color={colors.textMain} height="10px" width="300px" />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1em',
+        }}
+      >
+        <h2>Must connect wallet to proceed</h2>
+        <BarLoader color={colors.textMain} height="10px" width="300px" />
+      </div>
     ),
     [Content.Error]: <h1>rekt</h1>,
     [Content.Fallback]: <FallbackPage />,
