@@ -33,6 +33,7 @@ const Home: NextPage = () => {
     if (!isLoading) {
       if (error) {
         setContent(Content.Error);
+        console.error(error);
       } else if (isMintOpen === false) {
         setContent(Content.Fallback);
       } else if (isMintOpen === true) {
