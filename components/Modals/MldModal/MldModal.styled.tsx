@@ -30,7 +30,8 @@ export const Container = styled.div`
   border-radius: ${(props) => props.theme.borderRadius};
 
   @media (max-width: 500px) {
-    max-width: 90%;
+    gap: 2em;
+    padding: 1.5em 1em;
   }
 `;
 
@@ -52,6 +53,11 @@ export const MldGrid = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 500px) {
+    gap: 0.25em;
+    padding: 0.5em 0.25em;
   }
 `;
 
@@ -77,7 +83,7 @@ export const Text = styled.span`
   max-width: 50ch;
 
   @media (max-width: 500px) {
-    margin-top: 18px;
+    font-size: 1rem;
   }
 `;
 
