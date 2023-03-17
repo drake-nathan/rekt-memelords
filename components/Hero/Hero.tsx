@@ -5,6 +5,7 @@ import { useWindowSize } from 'hooks/useWindowSize';
 import { useStoreFrontMintPrice } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
 import Mint from 'components/Claim/Claim';
+import Link from 'next/link';
 
 const Hero = (): JSX.Element => {
   const { windowWidth } = useWindowSize();
@@ -65,6 +66,12 @@ const Hero = (): JSX.Element => {
               OG daddy
             </a>{' '}
             (nfa)
+          </St.Text>
+          <St.Text>
+            Check if MLD has already been used to claim{' '}
+            <Link href="/claim-check" className="hvr-underline-from-left">
+              here
+            </Link>
           </St.Text>
         </St.ExplainDiv>
 
