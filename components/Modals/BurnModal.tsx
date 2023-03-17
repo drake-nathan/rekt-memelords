@@ -8,24 +8,25 @@ import {
   usePrepareStoreFrontBurnAndClaim,
   useStoreFrontBurnAndClaim,
 } from 'web3/generated';
-import { BigNumber, ethers } from 'ethers';
-import { useChainId } from 'wagmi';
-import { useEffect, useState } from 'react';
+import { useChainId, UserRejectedRequestError } from 'wagmi';
+import { useState } from 'react';
 import { BarLoader } from 'react-spinners';
 import { useTheme } from 'styled-components';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowMldModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleError: (error: string) => void;
-  selectedToken: number;
+  selectedTokens: number[];
   address: `0x${string}`;
   refetch: () => void;
 }
 
 const BurnModal = ({
   setShowModal,
+  setShowMldModal,
   handleError,
-  selectedToken,
+  selectedTokens,
   address,
   refetch,
 }: Props): JSX.Element => {
@@ -42,22 +43,34 @@ const BurnModal = ({
   const { config: configApproveAll } = usePrepareMldSetApprovalForAll({
     args: [storefrontAddress, true],
   });
-  const {
-    write: setApproval,
-    isSuccess: isSetApprovalSuccess,
-    isLoading: isSetApprovalLoading,
-  } = useMldSetApprovalForAll(configApproveAll);
-
-  useEffect(() => {
-    refetchIsApproved();
-  }, [isSetApprovalSuccess, isSetApprovalLoading]);
+  const { write: setApproval } = useMldSetApprovalForAll({
+    ...configApproveAll,
+    onSuccess: (data) => {
+      setIsLoading(true);
+      data.wait().then((receipt) => {
+        refetchIsApproved().then(() => setIsLoading(false));
+      });
+    },
+    onError: (error) => {
+      setIsLoading(false);
+      console.error(error);
+      handleError('something went wrong, ngmi');
+    },
+  });
 
   const handleApproveClick = () => {
     setApproval?.();
   };
 
   const { config: burnAndClaimConfig } = usePrepareStoreFrontBurnAndClaim({
-    args: [[BigNumber.from(selectedToken)]],
+    args: [selectedTokens],
+    onError: (error) => {
+      console.error(error);
+      setShowModal(false);
+      handleError(
+        'these tokens may have already been claimed, let us know if this is not the case',
+      );
+    },
   });
   const { write } = useStoreFrontBurnAndClaim({
     ...burnAndClaimConfig,
@@ -68,10 +81,12 @@ const BurnModal = ({
         setShowModal(false);
         handleError('much success! check your wallet.');
         refetch();
+        setShowMldModal(false);
       });
     },
     onError: (error) => {
       setIsLoading(false);
+      if (error instanceof UserRejectedRequestError) return;
       console.error(error);
       handleError('something went wrong, ngmi');
     },
@@ -87,27 +102,41 @@ const BurnModal = ({
 
       <St.BuyModalContainer>
         {!isApproved ? (
-          <>
-            <St.UnitDiv>
-              <St.UnitText>
-                First, you will need to approve MLD tokens for burning.
-              </St.UnitText>
-            </St.UnitDiv>
-            <St.UnitDiv>
-              <St.UnitText>
-                This is the same approval you would set for a marketplace, you
-                can revoke it after you burn.
-              </St.UnitText>
-            </St.UnitDiv>
-            <St.Button className={sono.className} onClick={handleApproveClick}>
-              set burn approval
-            </St.Button>
-          </>
+          isLoading ? (
+            <>
+              <St.UnitDiv>
+                <St.UnitText>
+                  setting burn approval on MLD contract...
+                </St.UnitText>
+              </St.UnitDiv>
+              <BarLoader color={colors.textMain} height="10px" width="300px" />
+            </>
+          ) : (
+            <>
+              <St.UnitDiv>
+                <St.UnitText>
+                  First, you will need to approve MLD tokens for burning.
+                </St.UnitText>
+              </St.UnitDiv>
+              <St.UnitDiv>
+                <St.UnitText>
+                  This is the same approval you would set for a marketplace, you
+                  can revoke it after you burn.
+                </St.UnitText>
+              </St.UnitDiv>
+              <St.Button
+                className={sono.className}
+                onClick={handleApproveClick}
+              >
+                set burn approval
+              </St.Button>
+            </>
+          )
         ) : isLoading ? (
           <>
             <St.UnitDiv>
               <St.UnitText>
-                lighting your token on fire, lemme find my lighter
+                lighting your tokens on fire, lemme find my lighter
               </St.UnitText>
             </St.UnitDiv>
             <BarLoader color={colors.textMain} height="10px" width="300px" />

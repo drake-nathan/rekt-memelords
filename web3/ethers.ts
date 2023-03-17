@@ -1,22 +1,23 @@
 import { Contract, providers } from 'ethers';
-import { storeFrontABI } from './generated';
+import { storeFrontABI, storeFrontAddress } from './generated';
 
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
-const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
 const chainEnv = process.env.NEXT_PUBLIC_CHAIN;
 
-if (!projectId || !infuraKey || !chainEnv || !alchemyKey) {
+if (!infuraKey || !chainEnv) {
   throw new Error('Missing env variables');
 }
+
+const chainId = chainEnv === 'goerli' ? 5 : 1;
+const address = storeFrontAddress[chainId];
 
 export const provider = new providers.InfuraProvider(chainEnv, infuraKey);
 
 export const storeFrontContract = new Contract(
-  '0x77D0b5F67A5328E3dAc6D6A06b65Eb8Ba17d20e9',
+  address,
   storeFrontABI,
   provider,
 );
 
-export const claimed = async (tokenId: number) =>
+export const claimed = async (tokenId: number): Promise<boolean> =>
   await storeFrontContract.claimed(tokenId);

@@ -9,17 +9,21 @@ import SuccessModal from 'components/Modals/SuccessModal';
 import MldModal from 'components/Modals/MldModal/MldModal';
 import { useStoreFrontMintPrice } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
+import MintModal from 'components/Modals/MintModal';
 
 const Mint = (): JSX.Element => {
   const { address } = useAccount();
   // safe to cast because user must be connected to get here
-  const { userMldTokens, refetch } = useUserMldTokens(address as string);
+  const { userMldTokens, refetch, isLoading, isFetching } = useUserMldTokens(
+    address as string,
+  );
   const { data: _mintPrice } = useStoreFrontMintPrice();
 
   const [showMldModal, setShowMldModal] = useState(false);
 
   const [showBurnModal, setShowBurnModal] = useState(false);
-  const [selectedToken, setSelectedToken] = useState<number>();
+  const [showMintModal, setShowMintModal] = useState(false);
+  const [selectedTokens, setSelectedTokens] = useState<number[]>([]);
   const [mintPrice, setMintPrice] = useState<number>(0.042);
 
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -42,10 +46,6 @@ const Mint = (): JSX.Element => {
   };
 
   const handleClaimClick = () => {
-    if (!userMldTokens || userMldTokens.length === 0) {
-      handleError('You have no MLDs to claim');
-      return;
-    }
     setShowMldModal(true);
   };
 
@@ -66,16 +66,32 @@ const Mint = (): JSX.Element => {
           handleError={handleError}
           userMldTokens={userMldTokens}
           setShowBurnModal={setShowBurnModal}
-          selectedToken={selectedToken}
-          setSelectedToken={setSelectedToken}
+          setShowMintModal={setShowMintModal}
+          selectedTokens={selectedTokens}
+          setSelectedTokens={setSelectedTokens}
+          isLoading={isLoading}
+          isFetching={isFetching}
         />
       )}
 
-      {showBurnModal && selectedToken && (
+      {showBurnModal && selectedTokens && (
         <BurnModal
           setShowModal={setShowBurnModal}
+          setShowMldModal={setShowMldModal}
           handleError={handleError}
-          selectedToken={selectedToken}
+          selectedTokens={selectedTokens}
+          address={address as `0x${string}`}
+          refetch={refetch}
+        />
+      )}
+
+      {showMintModal && selectedTokens && (
+        <MintModal
+          setShowModal={setShowMintModal}
+          setShowMldModal={setShowMldModal}
+          handleError={handleError}
+          selectedTokens={selectedTokens}
+          mintPrice={mintPrice}
           address={address as `0x${string}`}
           refetch={refetch}
         />

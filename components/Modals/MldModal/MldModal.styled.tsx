@@ -112,3 +112,38 @@ export const Button = styled.button`
     min-width: 125px;
   }
 `;
+
+export const TextButtonDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  margin-block: -1em;
+`;
+
+export const TextButton = styled.span`
+  text-decoration: underline;
+
+  :hover {
+    cursor: pointer;
+    color: ${(props) => props.theme.colors.textOffset};
+  }
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25em;
+`;
+
+export const Label = styled.label``;
+
+export const Input = styled.input`
+  min-height: 40px;
+  min-width: 100px;
+  border: 2px solid ${(props) => props.theme.colors.textOffset};
+  border-radius: ${(props) => props.theme.borderRadius};
+  padding: 0 0.5em;
+  font-size: 1.25rem;
+  font-weight: 500;
+`;

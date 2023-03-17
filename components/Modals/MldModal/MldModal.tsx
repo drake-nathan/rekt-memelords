@@ -2,51 +2,59 @@ import * as St from './MldModal.styled';
 import { useEffect } from 'react';
 import { sono } from 'styles/fonts';
 import Checkbox from 'rc-checkbox';
-import { claimed } from 'web3/ethers';
+import { BarLoader } from 'react-spinners';
+import { useTheme } from 'styled-components';
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleError: (error: string) => void;
   userMldTokens: number[];
   setShowBurnModal: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedToken: number | undefined;
-  setSelectedToken: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setShowMintModal: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedTokens: number[];
+  setSelectedTokens: React.Dispatch<React.SetStateAction<number[]>>;
+  isLoading: boolean;
+  isFetching: boolean;
 }
 
-const PremintModal: React.FC<Props> = ({
+const MldModal: React.FC<Props> = ({
   setShowModal,
   handleError,
   userMldTokens,
   setShowBurnModal,
-  selectedToken,
-  setSelectedToken,
+  setShowMintModal,
+  selectedTokens,
+  setSelectedTokens,
+  isLoading,
+  isFetching,
 }) => {
+  const { colors } = useTheme();
+
   useEffect(() => {
-    setSelectedToken(userMldTokens[0]);
+    setSelectedTokens(userMldTokens);
   }, [userMldTokens]);
 
   const handleCheckboxClick = (tokenId: number) => {
-    setSelectedToken(tokenId);
-    // if (selectedToken.includes(tokenId)) {
-    //   setselectedToken(selectedToken.filter((id) => id !== tokenId));
-    // } else {
-    //   setselectedToken([...selectedToken, tokenId]);
-    // }
+    if (selectedTokens.includes(tokenId)) {
+      setSelectedTokens(selectedTokens.filter((id) => id !== tokenId));
+    } else {
+      setSelectedTokens([...selectedTokens, tokenId]);
+    }
   };
 
   const handleBurnClick = async () => {
-    if (!selectedToken) {
+    if (!selectedTokens.length) {
       handleError('Please select an MLD to claim with');
-      return;
-    }
-
-    const isClaimed = await claimed(selectedToken);
-
-    if (isClaimed) {
-      setShowBurnModal(false);
-      handleError('MLD already claimed');
     } else {
       setShowBurnModal(true);
+    }
+  };
+
+  const handleMintClick = async () => {
+    if (!selectedTokens.length) {
+      handleError('Please select an MLD to claim with');
+    } else {
+      setShowMintModal(true);
     }
   };
 
@@ -54,35 +62,69 @@ const PremintModal: React.FC<Props> = ({
     <>
       <St.Background onClick={() => setShowModal(false)} />
       <St.Container>
-        <St.Text>Select MLD to claim with</St.Text>
+        {isLoading ? (
+          <BarLoader color={colors.textMain} height="10px" width="300px" />
+        ) : (
+          <>
+            {userMldTokens.length ? (
+              <>
+                <St.Text>Select MLD to claim with</St.Text>
+                <St.TextButtonDiv>
+                  <St.TextButton
+                    onClick={() => setSelectedTokens(userMldTokens)}
+                  >
+                    select all
+                  </St.TextButton>
+                  <St.TextButton onClick={() => setSelectedTokens([])}>
+                    deselect all
+                  </St.TextButton>
+                </St.TextButtonDiv>
+                <St.MldGrid>
+                  {userMldTokens.map((tokenId) => {
+                    const isChecked = selectedTokens.includes(tokenId);
+                    return (
+                      <St.Mld
+                        key={`MLD ${tokenId}`}
+                        onClick={() => handleCheckboxClick(tokenId)}
+                      >
+                        <Checkbox checked={isChecked} />
+                        <St.Text>{`#${tokenId}`}</St.Text>
+                      </St.Mld>
+                    );
+                  })}
+                </St.MldGrid>
+              </>
+            ) : (
+              <St.Text>You have no MLD to claim with</St.Text>
+            )}
 
-        {userMldTokens && (
-          <St.MldGrid>
-            {userMldTokens.map((tokenId) => {
-              const isChecked = selectedToken === tokenId;
+            {/* <St.Form>
+              <St.Label htmlFor="input-number">Specify token id</St.Label>
+              <St.Input
+                id="input-number"
+                type="number"
+                className={sono.className}
+                onChange={(e) => {
+                  const tokenId = parseInt(e.target.value);
 
-              return (
-                <St.Mld
-                  key={`MLD ${tokenId}`}
-                  onClick={() => handleCheckboxClick(tokenId)}
-                >
-                  <Checkbox checked={isChecked} />
-                  <St.Text>{`#${tokenId}`}</St.Text>
-                </St.Mld>
-              );
-            })}
-          </St.MldGrid>
+                  setSelectedTokens([tokenId]);
+                }}
+              />
+            </St.Form> */}
+
+            <St.ButtonDiv>
+              <St.Button className={sono.className} onClick={handleMintClick}>
+                mint
+              </St.Button>
+              <St.Button className={sono.className} onClick={handleBurnClick}>
+                burn
+              </St.Button>
+            </St.ButtonDiv>
+          </>
         )}
-
-        <St.ButtonDiv>
-          <St.Button className={sono.className}>mint</St.Button>
-          <St.Button className={sono.className} onClick={handleBurnClick}>
-            burn
-          </St.Button>
-        </St.ButtonDiv>
       </St.Container>
     </>
   );
 };
 
-export default PremintModal;
+export default MldModal;
