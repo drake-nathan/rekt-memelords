@@ -9,8 +9,8 @@ interface Props {
   handleError: (error: string) => void;
   userMldTokens: number[];
   setShowBurnModal: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedToken: number;
-  setSelectedToken: React.Dispatch<React.SetStateAction<number>>;
+  selectedToken: number | undefined;
+  setSelectedToken: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 const PremintModal: React.FC<Props> = ({
@@ -35,14 +35,16 @@ const PremintModal: React.FC<Props> = ({
   };
 
   const handleBurnClick = async () => {
+    if (!selectedToken) {
+      handleError('Please select an MLD to claim with');
+      return;
+    }
+
     const isClaimed = await claimed(selectedToken);
 
     if (isClaimed) {
       setShowBurnModal(false);
       handleError('MLD already claimed');
-    } else if (!selectedToken) {
-      setShowBurnModal(false);
-      handleError('Please select at least one MLD');
     } else {
       setShowBurnModal(true);
     }

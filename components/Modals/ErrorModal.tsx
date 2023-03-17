@@ -31,7 +31,7 @@ const ErrorModal = ({ setShowModal, message }: Props): JSX.Element => {
             className={sono.className}
             onClick={handleCloseModal}
           >
-            CLOSE
+            close
           </St.LittleButton>
         </St.LittleButtonDiv>
       </St.CenterModalContainer>

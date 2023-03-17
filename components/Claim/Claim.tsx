@@ -19,7 +19,7 @@ const Mint = (): JSX.Element => {
   const [showMldModal, setShowMldModal] = useState(false);
 
   const [showBurnModal, setShowBurnModal] = useState(false);
-  const [selectedToken, setSelectedToken] = useState<number>(0);
+  const [selectedToken, setSelectedToken] = useState<number>();
   const [mintPrice, setMintPrice] = useState<number>(0.042);
 
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -42,6 +42,10 @@ const Mint = (): JSX.Element => {
   };
 
   const handleClaimClick = () => {
+    if (!userMldTokens || userMldTokens.length === 0) {
+      handleError('You have no MLDs to claim');
+      return;
+    }
     setShowMldModal(true);
   };
 
@@ -67,7 +71,7 @@ const Mint = (): JSX.Element => {
         />
       )}
 
-      {showBurnModal && (
+      {showBurnModal && selectedToken && (
         <BurnModal
           setShowModal={setShowBurnModal}
           handleError={handleError}
