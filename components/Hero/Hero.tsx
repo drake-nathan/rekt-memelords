@@ -14,7 +14,7 @@ const Hero = (): JSX.Element => {
 
   const openSeaLink = 'https://opensea.io/collection/memelord-district';
   const etherscanLink =
-    'https://etherscan.io/address/0x924F2a4D3e93cC595792292C84A41Ad3AEd70E95';
+    'https://etherscan.io/address/0x0b820E51631389C92e9aB12126a0434c04dBe02e';
 
   const aspectRatio = 1.5;
   const [width, setWidth] = useState<number>(550);

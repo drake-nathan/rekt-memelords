@@ -65,6 +65,7 @@ const BurnModal = ({
   const { config: burnAndClaimConfig } = usePrepareStoreFrontBurnAndClaim({
     args: [selectedTokens],
     onError: (error) => {
+      console.error(selectedTokens);
       console.error(error);
       setShowModal(false);
       handleError(
