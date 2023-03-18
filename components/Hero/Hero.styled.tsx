@@ -68,6 +68,8 @@ export const LinksDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 1em;
+  margin-top: -1em;
+  margin-bottom: 1em;
 `;
 
 export const LinkItem = styled(Text)`

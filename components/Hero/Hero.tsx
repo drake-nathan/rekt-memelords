@@ -12,7 +12,7 @@ const Hero = (): JSX.Element => {
 
   const { data: mintPrice } = useStoreFrontMintPrice();
 
-  const openSeaLink = 'https://opensea.io/collection/memelord-district';
+  const openSeaLink = 'https://opensea.io/collection/rektmemelord-editions';
   const etherscanLink =
     'https://etherscan.io/address/0x0b820E51631389C92e9aB12126a0434c04dBe02e';
 
@@ -49,6 +49,15 @@ const Hero = (): JSX.Element => {
       <St.MintSection>
         <St.Title>[ Professional MemeLord ]</St.Title>
 
+        <St.LinksDiv>
+          <a href={openSeaLink} target="_blank" rel="noreferrer">
+            <St.LinkItem>OpenSea</St.LinkItem>
+          </a>
+          <a href={etherscanLink} target="_blank" rel="noreferrer">
+            <St.LinkItem>Etherscan</St.LinkItem>
+          </a>
+        </St.LinksDiv>
+
         <St.ExplainDiv>
           <St.Text>1 MemeLord District = 1 PML</St.Text>
           <St.Text>
@@ -84,15 +93,6 @@ const Hero = (): JSX.Element => {
             {currentSupply < maxSupply ? 'NFTS REMAINING' : 'NFTS TOTAL'}
           </St.Text>
         </St.InfoDiv> */}
-        {/* 
-        <St.LinksDiv>
-          <a href={openSeaLink} target="_blank" rel="noreferrer">
-            <St.LinkItem>OpenSea</St.LinkItem>
-          </a>
-          <a href={etherscanLink} target="_blank" rel="noreferrer">
-            <St.LinkItem>Etherscan</St.LinkItem>
-          </a>
-        </St.LinksDiv> */}
       </St.MintSection>
     </St.Container>
   );
