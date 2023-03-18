@@ -58,7 +58,7 @@ const Home: NextPage = () => {
         <BarLoader color={colors.textMain} height="10px" width="300px" />
       </div>
     ),
-    [Content.Error]: <h1>rekt</h1>,
+    [Content.Error]: <h1>rekt, make sure you are on ETH mainnet</h1>,
     [Content.Fallback]: <FallbackPage />,
     [Content.Hero]: <Hero />,
   };

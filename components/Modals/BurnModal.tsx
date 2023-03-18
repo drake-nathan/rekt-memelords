@@ -35,11 +35,21 @@ const BurnModal = ({
   const storefrontAddress = storeFrontAddress[chainId];
 
   const [isLoading, setIsLoading] = useState(false);
+  const [prepareEnabled, setPrepareEnabled] = useState(false);
 
-  const { data: isApproved, refetch: refetchIsApproved } =
-    useMldIsApprovedForAll({
-      args: [address, storefrontAddress],
-    });
+  const {
+    data: isApproved,
+    refetch: refetchIsApproved,
+    isLoading: isApprovalLoading,
+  } = useMldIsApprovedForAll({
+    args: [address, storefrontAddress],
+    onSuccess: () => {
+      if (isApproved) {
+        setPrepareEnabled(true);
+      }
+    },
+  });
+
   const { config: configApproveAll } = usePrepareMldSetApprovalForAll({
     args: [storefrontAddress, true],
   });
@@ -48,7 +58,10 @@ const BurnModal = ({
     onSuccess: (data) => {
       setIsLoading(true);
       data.wait().then((receipt) => {
-        refetchIsApproved().then(() => setIsLoading(false));
+        refetchIsApproved().then(() => {
+          setIsLoading(false);
+          setPrepareEnabled(true);
+        });
       });
     },
     onError: (error) => {
@@ -64,13 +77,16 @@ const BurnModal = ({
 
   const { config: burnAndClaimConfig } = usePrepareStoreFrontBurnAndClaim({
     args: [selectedTokens],
+    enabled: prepareEnabled,
     onError: (error) => {
       console.error(selectedTokens);
       console.error(error);
-      setShowModal(false);
-      handleError(
-        'these tokens may have already been claimed, let us know if this is not the case',
-      );
+      if (isApproved && !isApprovalLoading) {
+        setShowModal(false);
+        handleError(
+          'these tokens may have already been claimed, let us know if this is not the case',
+        );
+      }
     },
   });
   const { write } = useStoreFrontBurnAndClaim({
