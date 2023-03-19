@@ -6,9 +6,21 @@ import { useStoreFrontMintPrice } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
 import Mint from 'components/Claim/Claim';
 import Link from 'next/link';
+import { useAccount } from 'wagmi';
+import { useDelegateCash } from 'hooks/useDelegateCash';
 
 const Hero = (): JSX.Element => {
   const { windowWidth } = useWindowSize();
+
+  const { address } = useAccount();
+  // safe to cast, as we only render this component if the user is logged in
+  const { data: delegates } = useDelegateCash(address as string);
+
+  useEffect(() => {
+    if (delegates) {
+      console.log('delegates', delegates);
+    }
+  }, [delegates]);
 
   const { data: mintPrice } = useStoreFrontMintPrice();
 

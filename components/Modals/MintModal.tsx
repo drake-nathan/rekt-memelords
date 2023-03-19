@@ -1,11 +1,10 @@
 import * as St from './Modals.styled';
 import { sono } from 'styles/fonts';
-import { useBalance, UserRejectedRequestError } from 'wagmi';
+import { UserRejectedRequestError } from 'wagmi';
 import { zeroAddress } from 'utils/constants';
-import { BigNumber } from 'ethers';
 import { parseEther } from 'ethers/lib/utils.js';
 import { usePrepareStoreFrontClaim, useStoreFrontClaim } from 'web3/generated';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BarLoader } from 'react-spinners';
 import { useTheme } from 'styled-components';
 
@@ -42,6 +41,7 @@ const MintModal = ({
       value: parseEther(total.toString()),
     },
     onError: (error) => {
+      console.log(config);
       console.error(error);
       setShowModal(false);
       handleError(
