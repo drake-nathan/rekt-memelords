@@ -14,7 +14,7 @@ interface Props {
   selectedTokens: number[];
   setSelectedTokens: React.Dispatch<React.SetStateAction<number[]>>;
   isLoading: boolean;
-  isFetching: boolean;
+  usingVault: boolean;
 }
 
 const MldModal: React.FC<Props> = ({
@@ -26,7 +26,7 @@ const MldModal: React.FC<Props> = ({
   selectedTokens,
   setSelectedTokens,
   isLoading,
-  isFetching,
+  usingVault,
 }) => {
   const { colors } = useTheme();
 
@@ -69,6 +69,11 @@ const MldModal: React.FC<Props> = ({
             {userMldTokens.length ? (
               <>
                 <St.Text>Select MLD to claim with</St.Text>
+                {usingVault && (
+                  <St.SubtleText>
+                    Delegate.cash detected, burns diabled when using delegate
+                  </St.SubtleText>
+                )}
                 <St.TextButtonDiv>
                   <St.TextButton
                     onClick={() => setSelectedTokens(userMldTokens)}
@@ -116,7 +121,11 @@ const MldModal: React.FC<Props> = ({
               <St.Button className={sono.className} onClick={handleMintClick}>
                 mint
               </St.Button>
-              <St.Button className={sono.className} onClick={handleBurnClick}>
+              <St.Button
+                disabled={usingVault}
+                className={sono.className}
+                onClick={handleBurnClick}
+              >
                 burn
               </St.Button>
             </St.ButtonDiv>

@@ -16,6 +16,7 @@ interface Props {
   mintPrice: number;
   address: `0x${string}`;
   refetch: () => void;
+  vault?: `0x${string}`;
 }
 
 const MintModal = ({
@@ -26,22 +27,22 @@ const MintModal = ({
   mintPrice,
   address,
   refetch,
+  vault,
 }: Props): JSX.Element => {
   const { colors } = useTheme();
-  const vault = zeroAddress;
   const quantity = selectedTokens.length;
   const total = quantity * mintPrice;
 
   const [isLoading, setIsLoading] = useState(false);
 
   const { config } = usePrepareStoreFrontClaim({
-    args: [address, selectedTokens, vault],
+    args: [address, selectedTokens, vault ?? zeroAddress],
     overrides: {
       from: address,
       value: parseEther(total.toString()),
     },
     onError: (error) => {
-      console.log(config);
+      console.info(config);
       console.error(error);
       setShowModal(false);
       handleError(

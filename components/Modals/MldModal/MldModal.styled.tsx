@@ -24,6 +24,7 @@ export const Container = styled.div`
   background: rgba(58, 58, 58, 0.7);
   border: 3px solid ${(props) => props.theme.colors.textMain};
   min-width: 300px;
+  max-width: 450px;
   gap: 2.5em;
   z-index: 20;
   padding: 2em 1.5em;
@@ -87,6 +88,14 @@ export const Text = styled.span`
   }
 `;
 
+export const SubtleText = styled.span`
+  color: ${(props) => props.theme.colors.textMain};
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  margin-top: -1em;
+`;
+
 export const ButtonDiv = styled.div`
   display: flex;
   align-items: center;
@@ -112,6 +121,13 @@ export const Button = styled.button`
     background-color: ${(props) => props.theme.colors.textMain};
     color: ${(props) => props.theme.colors.bgMain};
     font-weight: 700;
+  }
+
+  :disabled {
+    background-color: ${(props) => props.theme.colors.bgMain};
+    color: ${(props) => props.theme.colors.textOffset};
+    border: 3px solid ${(props) => props.theme.colors.textOffset};
+    cursor: not-allowed;
   }
 
   @media (max-width: 500px) {

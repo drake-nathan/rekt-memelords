@@ -9,11 +9,13 @@ export interface ITokenOwner {
 
 export const fetchUserMldTokens = async (
   chainId: number,
-  address: string,
+  address?: `0x${string}`,
 ): Promise<ITokenOwner[]> => {
-  const url = `https://api.rektmemelords.lol/mld-owners${
+  const root = `https://api.rektmemelords.lol/mld-owners${
     chainId === 5 ? '-goerli' : ''
-  }?address=${address}`;
+  }`;
+
+  const url = address ? `${root}?address=${address}` : root;
 
   const response = await axios.get<ITokenOwner[]>(url);
 

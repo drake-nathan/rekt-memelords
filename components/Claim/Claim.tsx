@@ -5,18 +5,19 @@ import { useAccount } from 'wagmi';
 import { useUserMldTokens } from 'hooks/useUserMldTokens';
 import BurnModal from 'components/Modals/BurnModal';
 import ErrorModal from 'components/Modals/ErrorModal';
-import SuccessModal from 'components/Modals/SuccessModal';
 import MldModal from 'components/Modals/MldModal/MldModal';
 import { useStoreFrontMintPrice } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
 import MintModal from 'components/Modals/MintModal';
+import { useDelegateCash } from 'hooks/useDelegateCash';
 
-const Mint = (): JSX.Element => {
+const Claim = (): JSX.Element => {
   const { address } = useAccount();
   // safe to cast because user must be connected to get here
-  const { userMldTokens, refetch, isLoading, isFetching } = useUserMldTokens(
-    address as string,
-  );
+  const { delegate } = useDelegateCash(address as `0x${string}`);
+  const { userMldTokens, checkIfTokensClaimed, isLoading, usingVault } =
+    useUserMldTokens(address as `0x${string}`, delegate);
+
   const { data: _mintPrice } = useStoreFrontMintPrice();
 
   const [showMldModal, setShowMldModal] = useState(false);
@@ -28,9 +29,6 @@ const Mint = (): JSX.Element => {
 
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  // const [successInfo, setSuccessInfo] = useState<ISuccessInfo>();
 
   useEffect(() => {
     if (_mintPrice) {
@@ -49,11 +47,6 @@ const Mint = (): JSX.Element => {
     setShowMldModal(true);
   };
 
-  // const handleSuccess = (successInfo: ISuccessInfo) => {
-  //   setSuccessInfo(successInfo);
-  //   setShowSuccessModal(true);
-  // };
-
   return (
     <St.Container>
       <St.Button className={sono.className} onClick={handleClaimClick}>
@@ -70,7 +63,7 @@ const Mint = (): JSX.Element => {
           selectedTokens={selectedTokens}
           setSelectedTokens={setSelectedTokens}
           isLoading={isLoading}
-          isFetching={isFetching}
+          usingVault={usingVault}
         />
       )}
 
@@ -81,7 +74,7 @@ const Mint = (): JSX.Element => {
           handleError={handleError}
           selectedTokens={selectedTokens}
           address={address as `0x${string}`}
-          refetch={refetch}
+          refetch={checkIfTokensClaimed}
         />
       )}
 
@@ -93,22 +86,16 @@ const Mint = (): JSX.Element => {
           selectedTokens={selectedTokens}
           mintPrice={mintPrice}
           address={address as `0x${string}`}
-          refetch={refetch}
+          refetch={checkIfTokensClaimed}
+          vault={delegate?.vault}
         />
       )}
 
       {showErrorModal && (
         <ErrorModal setShowModal={setShowErrorModal} message={errorMessage} />
       )}
-
-      {/* {showSuccessModal && (
-        <SuccessModal
-          setShowModal={setShowSuccessModal}
-          successInfo={successInfo as ISuccessInfo}
-        />
-      )} */}
     </St.Container>
   );
 };
 
-export default Mint;
+export default Claim;
