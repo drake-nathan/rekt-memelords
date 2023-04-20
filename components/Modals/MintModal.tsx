@@ -3,7 +3,11 @@ import { sono } from 'styles/fonts';
 import { UserRejectedRequestError } from 'wagmi';
 import { zeroAddress } from 'utils/constants';
 import { parseEther } from 'ethers/lib/utils.js';
-import { usePrepareStoreFrontClaim, useStoreFrontClaim } from 'web3/generated';
+import {
+  usePrepareStoreFrontFreeClaim,
+  useStoreFrontClaim,
+  useStoreFrontFreeClaim,
+} from 'web3/generated';
 import { useState } from 'react';
 import { BarLoader } from 'react-spinners';
 import { useTheme } from 'styled-components';
@@ -32,14 +36,15 @@ const MintModal = ({
   const { colors } = useTheme();
   const quantity = selectedTokens.length;
   const total = quantity * mintPrice;
+  const displayPrice =
+    mintPrice === 0 ? 'mfkin free bitchez!' : `${mintPrice}(ETH)`;
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { config } = usePrepareStoreFrontClaim({
+  const { config } = usePrepareStoreFrontFreeClaim({
     args: [address, selectedTokens, vault ?? zeroAddress],
     overrides: {
       from: address,
-      value: parseEther(total.toString()),
     },
     onError: (error) => {
       console.info(config);
@@ -50,7 +55,8 @@ const MintModal = ({
       );
     },
   });
-  const { write } = useStoreFrontClaim({
+
+  const { write } = useStoreFrontFreeClaim({
     ...config,
     onSuccess: (data) => {
       setIsLoading(true);
@@ -93,12 +99,14 @@ const MintModal = ({
             </St.UnitDiv>
 
             <St.UnitDiv>
-              <St.UnitText>Price: {mintPrice}(ETH)</St.UnitText>
+              <St.UnitText>Price: {displayPrice}</St.UnitText>
             </St.UnitDiv>
 
-            <St.UnitDiv>
-              <St.UnitText>Total: {total.toFixed(3)}(ETH)</St.UnitText>
-            </St.UnitDiv>
+            {total > 0 && (
+              <St.UnitDiv>
+                <St.UnitText>Total: {total.toFixed(3)}(ETH)</St.UnitText>
+              </St.UnitDiv>
+            )}
 
             <St.Button onClick={handleMintClick} className={sono.className}>
               mint

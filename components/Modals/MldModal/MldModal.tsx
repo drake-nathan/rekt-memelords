@@ -8,7 +8,7 @@ import { useTheme } from 'styled-components';
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleError: (error: string) => void;
-  userMldTokens: number[];
+  userMldTokens: number[] | undefined;
   setShowBurnModal: React.Dispatch<React.SetStateAction<boolean>>;
   setShowMintModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedTokens: number[];
@@ -31,8 +31,8 @@ const MldModal: React.FC<Props> = ({
   const { colors } = useTheme();
 
   useEffect(() => {
-    setSelectedTokens(userMldTokens);
-  }, [userMldTokens]);
+    if (userMldTokens) setSelectedTokens(userMldTokens);
+  }, [userMldTokens, setSelectedTokens]);
 
   const handleCheckboxClick = (tokenId: number) => {
     if (selectedTokens.includes(tokenId)) {
@@ -66,7 +66,7 @@ const MldModal: React.FC<Props> = ({
           <BarLoader color={colors.textMain} height="10px" width="300px" />
         ) : (
           <>
-            {userMldTokens.length ? (
+            {userMldTokens && userMldTokens.length ? (
               <>
                 <St.Text>Select MLD to claim with</St.Text>
                 {usingVault && (
@@ -121,13 +121,14 @@ const MldModal: React.FC<Props> = ({
               <St.Button className={sono.className} onClick={handleMintClick}>
                 mint
               </St.Button>
-              <St.Button
+
+              {/* <St.Button
                 disabled={usingVault}
                 className={sono.className}
                 onClick={handleBurnClick}
               >
                 burn
-              </St.Button>
+              </St.Button> */}
             </St.ButtonDiv>
           </>
         )}

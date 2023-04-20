@@ -15,10 +15,10 @@ const CheckClaimPage = (): JSX.Element => {
     const isClaimed = await claimed(tokenId);
 
     if (isClaimed) {
-      setMessage(`MLD #${tokenId} has already been claimed.`);
+      setMessage(`MLD #${tokenId} has already been used to claim.`);
       setShowModal(true);
     } else {
-      setMessage(`MLD #${tokenId} has not been claimed yet.`);
+      setMessage(`MLD #${tokenId} has not been used to claim yet.`);
       setShowModal(true);
     }
   };

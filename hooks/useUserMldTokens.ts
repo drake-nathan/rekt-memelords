@@ -52,13 +52,6 @@ export const useUserMldTokens = (
   };
 
   useEffect(() => {
-    console.log({
-      usingVault,
-      delegate,
-      triedVault: triedVault.current,
-      userMldTokens,
-    });
-
     if (account === delegate?.vault) {
       setUsingVault(true);
     }

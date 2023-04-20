@@ -6,17 +6,22 @@ import { useUserMldTokens } from 'hooks/useUserMldTokens';
 import BurnModal from 'components/Modals/BurnModal';
 import ErrorModal from 'components/Modals/ErrorModal';
 import MldModal from 'components/Modals/MldModal/MldModal';
-import { useStoreFrontMintPrice } from 'web3/generated';
+import { useStoreFrontMintPrice, useTokenBalanceOf } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
 import MintModal from 'components/Modals/MintModal';
 import { useDelegateCash } from 'hooks/useDelegateCash';
+import { BigNumber } from 'ethers';
 
 const Claim = (): JSX.Element => {
   const { address } = useAccount();
   // safe to cast because user must be connected to get here
   const { delegate } = useDelegateCash(address as `0x${string}`);
-  const { userMldTokens, checkIfTokensClaimed, isLoading, usingVault } =
-    useUserMldTokens(address as `0x${string}`, delegate);
+  const {
+    userMldTokens,
+    checkIfTokensClaimed,
+    isLoading: isLoadingMldTokens,
+    usingVault,
+  } = useUserMldTokens(address as `0x${string}`, delegate);
 
   const { data: _mintPrice } = useStoreFrontMintPrice();
 
@@ -36,7 +41,7 @@ const Claim = (): JSX.Element => {
     } else {
       setMintPrice(0.042);
     }
-  }, [mintPrice]);
+  }, [_mintPrice, mintPrice, setMintPrice]);
 
   const handleError = (error: string) => {
     setErrorMessage(error);
@@ -53,7 +58,7 @@ const Claim = (): JSX.Element => {
         claim
       </St.Button>
 
-      {showMldModal && userMldTokens && (
+      {showMldModal && (
         <MldModal
           setShowModal={setShowMldModal}
           handleError={handleError}
@@ -62,7 +67,7 @@ const Claim = (): JSX.Element => {
           setShowMintModal={setShowMintModal}
           selectedTokens={selectedTokens}
           setSelectedTokens={setSelectedTokens}
-          isLoading={isLoading}
+          isLoading={isLoadingMldTokens}
           usingVault={usingVault}
         />
       )}

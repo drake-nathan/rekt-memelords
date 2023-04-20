@@ -1,6 +1,6 @@
 {
   "name": "rekt-memelords",
-  "version": "1.0.3",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "predev": "yarn wagmi generate",
@@ -19,9 +19,9 @@
   "dependencies": {
     "@babel/core": "^7.21.3",
     "@tanstack/react-query": "^4.26.1",
-    "@wagmi/core": "^0.10.2",
-    "@web3modal/ethereum": "^2.2.1",
-    "@web3modal/react": "^2.2.1",
+    "@wagmi/core": "^0.10.10",
+    "@web3modal/ethereum": "^2.3.3",
+    "@web3modal/react": "^2.3.3",
     "axios": "^1.3.4",
     "delegatecash": "^0.4.1",
     "ethers": "^5.7.2",
@@ -33,7 +33,7 @@
     "react-is": "^18.2.0",
     "react-spinners": "^0.13.8",
     "styled-components": "^5.3.6",
-    "wagmi": "^0.12.2"
+    "wagmi": "^0.12.12"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
@@ -43,7 +43,7 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/styled-components": "^5.1.26",
-    "@wagmi/cli": "^0.1.11",
+    "@wagmi/cli": "^0.1.15",
     "eslint": "^8.33.0",
     "eslint-config-next": "^13.2.4",
     "husky": "^8.0.3",
