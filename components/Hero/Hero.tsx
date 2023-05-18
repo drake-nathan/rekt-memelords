@@ -28,14 +28,14 @@ const Hero = (): JSX.Element => {
     <St.Container>
       <St.ImageWrapper>
         <a
-          href="https://memelordsresources9838.blob.core.windows.net/memes/rmlrg.gif"
+          href="https://memelordsresources9838.blob.core.windows.net/memes/NowFuneralTokens.png"
           target="_blank"
           rel="noreferrer"
         >
           <Image
             priority
-            src="/memes/rmlrg.gif"
-            alt="Professional MemeLord"
+            src="/memes/nowFuneralTokens.png"
+            alt="Funeral Tokens"
             width={width}
             height={height}
           />
@@ -43,7 +43,7 @@ const Hero = (): JSX.Element => {
       </St.ImageWrapper>
 
       <St.MintSection>
-        <St.Title>[ Memelord Rektguy ]</St.Title>
+        <St.Title>[ Now Funeral Tokens ]</St.Title>
 
         <St.LinksDiv>
           <a href={openSeaLink} target="_blank" rel="noreferrer">
