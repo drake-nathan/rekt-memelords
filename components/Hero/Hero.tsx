@@ -34,7 +34,7 @@ const Hero = (): JSX.Element => {
         >
           <Image
             priority
-            src="/memes/nowFuneralTokens.png"
+            src="/memes/NowFuneralTokens.png"
             alt="Funeral Tokens"
             width={width}
             height={height}
