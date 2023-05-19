@@ -6,11 +6,10 @@ import { useUserMldTokens } from 'hooks/useUserMldTokens';
 import BurnModal from 'components/Modals/BurnModal';
 import ErrorModal from 'components/Modals/ErrorModal';
 import MldModal from 'components/Modals/MldModal/MldModal';
-import { useStoreFrontMintPrice, useTokenBalanceOf } from 'web3/generated';
+import { useStoreFrontMintPrice } from 'web3/generated';
 import { formatEther } from 'ethers/lib/utils.js';
 import MintModal from 'components/Modals/MintModal';
 import { useDelegateCash } from 'hooks/useDelegateCash';
-import { BigNumber } from 'ethers';
 
 const Claim = (): JSX.Element => {
   const { address } = useAccount();

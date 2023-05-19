@@ -12,7 +12,7 @@ const Hero = (): JSX.Element => {
   const etherscanLink =
     'https://etherscan.io/address/0x0b820E51631389C92e9aB12126a0434c04dBe02e';
 
-  const aspectRatio = 1;
+  const aspectRatio = 1.25328;
   const [width, setWidth] = useState<number>(550);
   const height = width / aspectRatio;
 

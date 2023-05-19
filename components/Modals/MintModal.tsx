@@ -20,7 +20,7 @@ interface Props {
   mintPrice: number;
   address: `0x${string}`;
   refetch: () => void;
-  vault?: `0x${string}`;
+  vault: `0x${string}` | undefined;
 }
 
 const MintModal = ({
@@ -60,7 +60,7 @@ const MintModal = ({
     ...config,
     onSuccess: (data) => {
       setIsLoading(true);
-      data.wait().then((receipt) => {
+      data.wait().then(() => {
         setIsLoading(false);
         setShowModal(false);
         handleError('much success! check your wallet.');
@@ -90,6 +90,7 @@ const MintModal = ({
             <St.UnitDiv>
               <St.UnitText>minting feet pics, please wait...</St.UnitText>
             </St.UnitDiv>
+
             <BarLoader color={colors.textMain} height="10px" width="300px" />
           </>
         ) : (
